@@ -76,6 +76,19 @@ def draw_motif(d, motif, colors, box, seed):
             d.rounded_rectangle((bx, mid - bh, bx + w / 48 * 0.55, mid + bh), 4, fill=colors[i % len(colors)])
         for _ in range(4):
             note(d, x0 + rnd.random() * w * 0.85, y0 + h * (0.15 + rnd.random() * 0.15), rnd.randint(18, 28), rnd.choice(colors))
+    elif motif == "shapes":
+        cx, cy, s = x0 + w * 0.5, y0 + h * 0.5, min(w, h) * 0.28
+        d.ellipse((cx - s * 1.3, cy - s * 1.2, cx + s * 0.3, cy + s * 0.4), fill=colors[0])                 # 丸
+        d.rounded_rectangle((cx - s * 0.2, cy - s * 0.3, cx + s * 1.2, cy + s * 1.1), 18, fill=colors[2])    # 四角
+        d.polygon([(cx - s * 0.9, cy + s * 1.3), (cx - s * 0.1, cy - s * 0.1), (cx + s * 0.7, cy + s * 1.3)],
+                  fill=colors[1] + "cc")                                                                    # 三角
+        # ペン（斜めの軸とペン先）
+        px, py = cx + s * 1.1, cy - s * 1.3
+        d.line((px, py, px - s * 0.9, py + s * 0.9), fill=colors[3], width=22)
+        d.polygon([(px - s * 0.9 - 14, py + s * 0.9 - 6), (px - s * 0.9 + 6, py + s * 0.9 + 14), (px - s * 1.15, py + s * 1.15)],
+                  fill="#f5f0e6")
+        for _ in range(8):                                                                                  # きらめき
+            star(d, x0 + rnd.random() * w, y0 + rnd.random() * h, rnd.randint(6, 12), rnd.choice(colors))
     else:
         for i, c in enumerate(colors):
             r = h * 0.38
