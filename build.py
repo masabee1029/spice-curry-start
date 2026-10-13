@@ -55,6 +55,7 @@ def shop_box(q, label):
             % (e(label), e(amazon_link(q)), e(rakuten_link(q))))
 
 # ---------- カテゴリ別のおすすめ（全ページに出すアフィリエイト誘導） ----------
+IMAGES = bool(SITECFG.get("images")) and os.path.exists(os.path.join(ROOT, "make_images.py"))
 PICKS = {k: [tuple(x) for x in v] for k, v in SITECFG["picks"].items()}
 DEFAULT_PICKS = [tuple(x) for x in SITECFG["default_picks"]]
 
@@ -151,7 +152,10 @@ nav a{margin-left:14px;font-size:14px;color:var(--muted);text-decoration:none}na
 .pr{font-size:12px;color:var(--muted);padding:6px 0;border-bottom:1px dashed var(--line)}
 .hero{padding:40px 0 24px}.hero h1{font-size:28px;line-height:1.4;margin:0 0 8px}.hero p{color:var(--muted);margin:0}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding:16px 0 40px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--fg);display:block}
+.thumb{display:block;width:calc(100% + 32px);margin:-16px -16px 12px;aspect-ratio:1200/630;object-fit:cover;border-radius:12px 12px 0 0}
+.hero-img{display:block;width:100%;height:auto;border-radius:14px;margin-top:20px}
+.eyecatch{display:block;width:100%;height:auto;border-radius:12px;margin:8px 0 20px}
+.card{overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--fg);display:block}
 .card:hover{border-color:var(--accent)}.card h2{font-size:17px;line-height:1.5;margin:6px 0}.card p{font-size:13px;color:var(--muted);margin:0}
 .tag{display:inline-block;font-size:12px;padding:1px 10px;border-radius:99px;background:var(--accent);color:#fff}
 .date{font-size:12px;color:var(--muted);margin-left:8px}
@@ -181,15 +185,15 @@ GA_ID = (CFG.get("ga_measurement_id") or "").strip()
 GA = ("""<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','%s');</script>""" % (GA_ID, GA_ID)) if GA_ID else ""
 
-def page(title, desc, body, path, depth=0):
+def page(title, desc, body, path, depth=0, og_image="og.png"):
     up = "../" * depth
     e = html.escape
     full = title if title == NAME else "%s｜%s" % (title, NAME)
-    return """<!doctype html><html lang="ja"><head><meta charset="utf-8">
+    html_out = """<!doctype html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>%s</title><meta name="description" content="%s">
 <link rel="canonical" href="%s"><meta property="og:title" content="%s"><meta property="og:description" content="%s">
-<meta property="og:type" content="website"><meta property="og:url" content="%s"><meta property="og:image" content="%sog.png">
+<meta property="og:type" content="website"><meta property="og:url" content="%s"><meta property="og:image" content="%sOGIMG">
 <meta name="twitter:card" content="summary_large_image">
 <style>%s</style>%s</head><body>
 <header><div class="wrap"><div class="top"><a class="logo" href="%sindex.html">LOGO_HTML</a>
@@ -202,11 +206,13 @@ def page(title, desc, body, path, depth=0):
         up, up, up, body, up, up,
         ('<a href="%s" target="_blank" rel="noopener">お問い合わせ</a>' % e(CFG["contact_url"])) if CFG.get("contact_url") else "",
         date.today().year, NAME)
+    return html_out.replace("OGIMG", og_image)
 
 def card(a, up=""):
     e = html.escape
-    return ('<a class="card" href="%s%s"><span class="tag">%s</span><span class="date">%s</span>'
-            '<h2>%s</h2><p>%s</p></a>' % (up, a["url"], e(a.get("category", "")), a["date"], e(a["title"]), e(a["description"])))
+    thumb = ('<img class="thumb" loading="lazy" src="%simg/articles/%s.jpg" alt="">' % (up, a["slug"])) if IMAGES else ""
+    return ('<a class="card" href="%s%s">%s<span class="tag">%s</span><span class="date">%s</span>'
+            '<h2>%s</h2><p>%s</p></a>' % (up, a["url"], thumb, e(a.get("category", "")), a["date"], e(a["title"]), e(a["description"])))
 
 def write(path, s):
     p = os.path.join(OUT, path)
@@ -217,7 +223,12 @@ def build():
     arts = load_articles()
     if os.path.isdir(os.path.join(OUT, "articles")):
         shutil.rmtree(os.path.join(OUT, "articles"))
+    if IMAGES:
+        import make_images
+        make_images.generate(arts, SITECFG, OUT)
     hero = '<div class="hero"><h1>%s</h1><p>%s</p></div>' % (SITECFG["hero_title"], SITECFG["hero_text"])
+    if IMAGES:
+        hero = '<img class="hero-img" src="img/header.jpg" alt="%s">' % html.escape(NAME) + hero
     write("index.html", page(NAME, SITECFG["home_description"],
                              hero + picks_box("", SITECFG["home_picks_title"]) +
                              '<div class="cards">' + "".join(card(a) for a in arts) + "</div>", "index.html"))
@@ -238,9 +249,12 @@ def build():
             art = art[:k] + picks_box(cat, SITECFG["picks_title_long"]) + art[k:]
         else:
             art += picks_box(cat, SITECFG["picks_title_long"])
-        body = ('<article><span class="tag">%s</span><span class="date">%s</span><h1>%s</h1>%s%s</article>%s'
-                % (e(cat), a["date"], e(a["title"]), toc, art, rel))
-        write(a["url"], page(a["title"], a["description"], body, a["url"], 1))
+        body = ('<article><span class="tag">%s</span><span class="date">%s</span><h1>%s</h1>%s%s%s</article>%s'
+                % (e(cat), a["date"], e(a["title"]),
+                   ('<img class="eyecatch" src="../img/articles/%s.jpg" alt="">' % a["slug"]) if IMAGES else "",
+                   toc, art, rel))
+        write(a["url"], page(a["title"], a["description"], body, a["url"], 1,
+                             ("img/articles/%s.jpg" % a["slug"]) if IMAGES else "og.png"))
     about = ('<article><h1>このサイトについて</h1>' + SITECFG["about_html"] +
              '<h2>広告について</h2><p>当サイトは Amazonアソシエイト・楽天アフィリエイトに参加しており、紹介した商品の購入により運営者が紹介料を受け取ることがあります。Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。</p></article>'
              + picks_box("", SITECFG["home_picks_title"]))
