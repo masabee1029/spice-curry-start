@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://masabee1029.github.io/spice-curry-start/sitemap.xml
