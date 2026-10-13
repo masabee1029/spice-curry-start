@@ -1,7 +1,8 @@
 """ヘッダー画像と記事ごとのアイキャッチ画像を作る（図形と文字だけ。他人の作品は使わない）。
 
 site.json の "images" 設定:
-    {"motif": "hearts" | "spice" | "music" | "rings", "bg": "#色", "colors": ["#色", ...]}
+    {"motif": "hearts" | "spice" | "music" | "rings", "bg": "#色", "colors": ["#色", ...],
+     "header_image": "assets/header.jpg"}  ← 任意。指定するとヘッダーはその画像を使う
 出力: docs/img/header.jpg（1600x480）、docs/img/articles/<slug>.jpg（1200x630）
 build.py から generate(arts, sitecfg, out_dir) として呼ばれる。
 """
@@ -112,6 +113,13 @@ def wrap(d, text, f, maxw, maxlines):
 
 def header(sitecfg, path):
     im_cfg = sitecfg["images"]
+    if im_cfg.get("header_image"):
+        src = os.path.join(os.path.dirname(os.path.abspath(__file__)), im_cfg["header_image"])
+        im = Image.open(src).convert("RGB")
+        if im.width > 1600:
+            im = im.resize((1600, round(im.height * 1600 / im.width)), Image.LANCZOS)
+        im.save(path, quality=88)
+        return
     W, H = 1600, 480
     im = Image.new("RGB", (W, H), im_cfg["bg"])
     d = ImageDraw.Draw(im, "RGBA")
