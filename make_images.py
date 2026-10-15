@@ -4,6 +4,7 @@ site.json の "images" 設定:
     {"motif": "hearts" | "spice" | "music" | "rings", "bg": "#色", "colors": ["#色", ...],
      "header_image": "assets/header.jpg"}  ← 任意。指定するとヘッダーはその画像を使う
 出力: docs/img/header.jpg（1600x480）、docs/img/articles/<slug>.jpg（1200x630）
+assets/articles/<slug>.jpg があれば、その記事のアイキャッチは描かずにその画像を使う（幅1200に縮小）
 build.py から generate(arts, sitecfg, out_dir) として呼ばれる。
 """
 import math, os, random
@@ -132,6 +133,13 @@ def header(sitecfg, path):
 
 def eyecatch(sitecfg, art, path):
     im_cfg = sitecfg["images"]
+    src = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "articles", art["slug"] + ".jpg")
+    if os.path.exists(src):
+        im = Image.open(src).convert("RGB")
+        if im.width > 1200:
+            im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
+        im.save(path, quality=86)
+        return
     W, H = 1200, 630
     im = Image.new("RGB", (W, H), im_cfg["bg"])
     d = ImageDraw.Draw(im, "RGBA")
