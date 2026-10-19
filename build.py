@@ -62,14 +62,18 @@ def shop_box(q, label):
 REFS = SITECFG.get("refs", {})
 
 def refs_html(q):
-    """ボタンの前に出す「参考：売れ筋の商品名」。各商品名は、その名前での Amazon 検索へつなぐ。"""
+    """ボタンの前に出す「参考：人気の商品名」。Amazon で選んだものは Amazon 検索へ、楽天で選んだもの（src: 楽天）は楽天検索へつなぐ。"""
     items = REFS.get(q) or []
     if not items:
         return ""
     e = html.escape
-    links = "・".join('<a rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a>'
-                     % (e(amazon_link(it.get("q") or it["name"])), e(it["name"])) for it in items)
-    return '<span class="ref">参考（%s）：%s</span>' % (e(REFS.get("_label", "売れ筋")), links)
+    groups = []
+    for src, fn in (("Amazon", amazon_link), ("楽天", rakuten_link)):
+        its = [it for it in items if (it.get("src") or "Amazon") == src]
+        if its:
+            groups.append('%s：%s' % (src, "・".join('<a rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a>'
+                          % (e(fn(it.get("q") or it["name"])), e(it["name"])) for it in its)))
+    return '<span class="ref">参考（%s）：%s</span>' % (e(REFS.get("_label", "人気")), "　／　".join(groups))
 
 # ---------- カテゴリ別のおすすめ（全ページに出すアフィリエイト誘導） ----------
 IMAGES = bool(SITECFG.get("images")) and os.path.exists(os.path.join(ROOT, "make_images.py"))
