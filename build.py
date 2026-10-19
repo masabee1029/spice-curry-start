@@ -53,10 +53,23 @@ def travel_box(q, label):
 
 def shop_box(q, label):
     e = html.escape
-    return ('<div class="shop"><div class="shop-name">%s</div>'
+    return ('<div class="shop"><div class="shop-name">%s%s</div>'
             '<a class="btn amz" rel="nofollow sponsored noopener" target="_blank" href="%s">Amazonで見る</a>'
             '<a class="btn rkt" rel="nofollow sponsored noopener" target="_blank" href="%s">楽天で見る</a></div>'
-            % (e(label), e(amazon_link(q)), e(rakuten_link(q))))
+            % (e(label), refs_html(q), e(amazon_link(q)), e(rakuten_link(q))))
+
+# ---------- 参考商品（Amazon・楽天の売れ筋から。site.json の refs、2026-10-20 追加） ----------
+REFS = SITECFG.get("refs", {})
+
+def refs_html(q):
+    """ボタンの前に出す「参考：売れ筋の商品名」。各商品名は、その名前での Amazon 検索へつなぐ。"""
+    items = REFS.get(q) or []
+    if not items:
+        return ""
+    e = html.escape
+    links = "・".join('<a rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a>'
+                     % (e(amazon_link(it.get("q") or it["name"])), e(it["name"])) for it in items)
+    return '<span class="ref">参考（%s）：%s</span>' % (e(REFS.get("_label", "売れ筋")), links)
 
 # ---------- カテゴリ別のおすすめ（全ページに出すアフィリエイト誘導） ----------
 IMAGES = bool(SITECFG.get("images")) and os.path.exists(os.path.join(ROOT, "make_images.py"))
@@ -66,10 +79,10 @@ DEFAULT_PICKS = [tuple(x) for x in SITECFG["default_picks"]]
 def picks_box(cat, title, compact=False):
     e = html.escape
     items = "".join(
-        '<div class="pick"><div><strong>%s</strong><span>%s</span></div>'
+        '<div class="pick"><div><strong>%s</strong><span>%s</span>%s</div>'
         '<a class="btn amz" rel="nofollow sponsored noopener" target="_blank" href="%s">Amazon</a>'
         '<a class="btn rkt" rel="nofollow sponsored noopener" target="_blank" href="%s">楽天</a></div>'
-        % (e(label), e(note), e(amazon_link(q)), e(rakuten_link(q)))
+        % (e(label), e(note), refs_html(q), e(amazon_link(q)), e(rakuten_link(q)))
         for q, label, note in (PICKS.get(cat, DEFAULT_PICKS)[:2] if compact else PICKS.get(cat, DEFAULT_PICKS)))
     return '<div class="picks"><div class="picks-h">%s</div>%s</div>' % (e(title), items)
 
@@ -193,6 +206,7 @@ code{background:var(--card);border:1px solid var(--line);border-radius:4px;paddi
 .picks-h{font-weight:800;margin-bottom:6px}
 .pick{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
 .pick div{flex:1 1 200px}.pick span{display:block;font-size:13px;color:var(--muted)}
+.pick .ref,.shop .ref{display:block;font-size:12.5px;color:var(--muted);margin-top:3px;font-weight:400}.ref a{color:var(--accent)}
 .share{display:flex;gap:8px;flex-wrap:wrap;margin:28px 0 8px}.share a{flex:1 1 90px;text-align:center;padding:8px;border-radius:8px;color:#fff;text-decoration:none;font-size:13px;font-weight:700}
 .sx{background:#111}.sl{background:#06c755}.sh{background:#00a4de}
 .author{display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:24px 0;font-size:14px}
