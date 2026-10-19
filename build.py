@@ -11,7 +11,8 @@
     商品ボタン: [[shop:検索キーワード|表示名]]　宿のボタン: [[travel:地名や会場名|表示名]]
 
 site.json の任意項目: featured（「はじめての方へ」に出す記事の slug の並び）、profile_name /
-profile_html（サイドバーと著者ボックス。無ければ about_html の2段落目）、category_slugs（{"カテゴリ名": "url用の英字"}）
+profile_html（サイドバーと著者ボックス。無ければ about_html の2段落目）、category_slugs（{"カテゴリ名": "url用の英字"}）、
+next_step_html（全記事の末尾＝まとめの後に出す「次の一歩」ボックス。読者の小さな一歩・問いかけ・感謝）
 """
 import hashlib, html, json, os, re, shutil, urllib.parse
 from datetime import date
@@ -198,6 +199,8 @@ code{background:var(--card);border:1px solid var(--line);border-radius:4px;paddi
 .avatar{flex:0 0 56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px}
 .author p{margin:4px 0 0;color:var(--muted)}
 .related{margin-top:24px}
+.next{background:var(--soft);border:2px dashed var(--accent2);border-radius:12px;padding:14px 18px;margin:32px 0 8px}
+.next-h{font-weight:800;color:var(--accent)}.next p{margin:6px 0 0}
 aside .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:20px;font-size:14px}
 aside .box-h{font-weight:800;font-size:15px;margin:-4px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--accent)}
 aside .sticky{position:sticky;top:16px}
@@ -275,6 +278,11 @@ def author_box(up):
     name = SITECFG.get("profile_name", "運営者")
     return ('<div class="author"><div class="avatar">%s</div><div><strong>この記事を書いた人：%s</strong><p>%s</p>'
             '<p><a href="%sabout.html">運営者について詳しく</a></p></div></div>' % (html.escape(name[:1]), html.escape(name), profile_html(), up))
+
+def next_step_box():
+    """まとめの後に出す「次の一歩」（『人を動かす』の発信への応用: 小さな一歩・問いかけ・感謝）"""
+    s = SITECFG.get("next_step_html")
+    return ('<div class="next"><div class="next-h">今日できる次の一歩</div>%s</div>' % s) if s else ""
 
 def share(url, title):
     q = urllib.parse.quote
@@ -380,7 +388,7 @@ def build():
                 % (crumbs([("ホーム", "../index.html"), (cat, "../" + cu), (a["title"], None)]),
                    cu, e(cat), a["date"], e(a["title"]),
                    ('<img class="eyecatch" src="../img/articles/%s.jpg" alt="">' % a["slug"]) if IMAGES else "",
-                   e(a["description"]), art, share(SITE + a["url"], a["title"]), author_box("../"), rel))
+                   e(a["description"]), art + next_step_box(), share(SITE + a["url"], a["title"]), author_box("../"), rel))
         ld = jsonld({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "description": a["description"],
                      "datePublished": a["date"], "image": SITE + (("img/articles/%s.jpg" % a["slug"]) if IMAGES else "og.png"),
                      "author": {"@type": "Person", "name": SITECFG.get("profile_name", "運営者"), "url": SITE + "about.html"},
