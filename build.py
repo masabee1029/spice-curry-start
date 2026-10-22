@@ -13,6 +13,7 @@
 site.json の任意項目: featured（「はじめての方へ」に出す記事の slug の並び）、profile_name /
 profile_html（サイドバーと著者ボックス。無ければ about_html の2段落目）、category_slugs（{"カテゴリ名": "url用の英字"}）、
 next_step_html（全記事の末尾＝まとめの後に出す「次の一歩」ボックス。読者の小さな一歩・問いかけ・感謝）
+hero_html（トップの見出し部分を差し替える HTML。{N_ARTICLES} {N_CATS} は記事数・カテゴリ数に置き換え）、extra_css（追加の CSS）
 """
 import hashlib, html, json, os, re, shutil, urllib.parse
 from datetime import date
@@ -235,6 +236,7 @@ footer a{color:var(--muted);margin-right:14px}.fcats{margin-bottom:10px}
 
 for _k, _v in SITECFG["colors"].items():
     CSS = CSS.replace(_k, _v)
+CSS += SITECFG.get("extra_css", "")
 
 GA_ID = (CFG.get("ga_measurement_id") or "").strip()
 GA = ("""<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
@@ -357,6 +359,8 @@ def build():
 
     # トップページ
     hero = '<div class="hero"><h1>%s</h1><p>%s</p></div>' % (SITECFG["hero_title"], SITECFG["hero_text"])
+    if SITECFG.get("hero_html"):
+        hero = SITECFG["hero_html"].replace("{N_ARTICLES}", str(len(arts))).replace("{N_CATS}", str(len(CATS)))
     if IMAGES:
         hero = '<img class="hero-img" src="img/header.jpg" alt="%s">' % e(NAME) + hero
     home = hero + '<h2 class="sec-h">はじめての方へ：まず読みたい記事</h2><div class="cards">%s</div>' % "".join(card(a, "", "h3") for a in featured)
