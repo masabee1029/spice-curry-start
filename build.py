@@ -91,6 +91,23 @@ def picks_box(cat, title, compact=False):
         for q, label, note in (PICKS.get(cat, DEFAULT_PICKS)[:2] if compact else PICKS.get(cat, DEFAULT_PICKS)))
     return '<div class="picks"><div class="picks-h">%s</div>%s</div>' % (e(title), items)
 
+# ---------- バリューコマースの提携広告（site.json の vc_ads、2026-10-23 追加） ----------
+VC_ADS = SITECFG.get("vc_ads", [])
+
+def vc_box(cat):
+    """記事のカテゴリに合う VC 広告（cats が空なら全記事）を最大3件。広告がなければ何も出さない。"""
+    e = html.escape
+    ads = [a for a in VC_ADS if a.get("url") and (not a.get("cats") or cat in a["cats"])][:3]
+    if not ads:
+        return ""
+    items = "".join(
+        '<div class="pick"><div><strong>%s</strong><span>%s</span></div>'
+        '<a class="btn vc" rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a>%s</div>'
+        % (e(a["name"]), e(a.get("note", "")), e(a["url"]), e(a.get("btn", "公式サイトを見る")),
+           '<img src="%s" height="1" width="1" alt="" style="border:0">' % e(a["beacon"]) if a.get("beacon") else "")
+        for a in ads)
+    return '<div class="picks"><div class="picks-h">%s</div>%s</div>' % (e(SITECFG.get("vc_title", "あわせて使えるサービス")), items)
+
 # ---------- Markdown（簡易） ----------
 def inline(s):
     s = html.escape(s, quote=False)
@@ -206,7 +223,7 @@ code{background:var(--card);border:1px solid var(--line);border-radius:4px;paddi
 .shop{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .shop-name{flex:1 1 100%;font-weight:700}
 .btn{--bc:#888;display:inline-block;padding:7px 18px;border-radius:999px;background:#000;color:var(--bc);border:1px solid var(--bc);text-decoration:none;font-size:14px;font-weight:700;transition:background .15s}
-.btn:hover{background:#1a1a1a}.btn.amz{--bc:#ff9900}.btn.rkt{--bc:#ff4d4d}
+.btn:hover{background:#1a1a1a}.btn.amz{--bc:#ff9900}.btn.rkt{--bc:#ff4d4d}.btn.vc{--bc:#3fc1a5}
 .picks{background:var(--card);border:2px solid var(--accent);border-radius:12px;padding:14px 16px;margin:24px 0}
 .picks-h{font-weight:800;margin-bottom:6px}
 .pick{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
@@ -401,9 +418,9 @@ def build():
             art = toc + art
         k = art.rfind('<h2 id="s%d">' % len(a["toc"])) if a["toc"] else -1
         if k > 0:
-            art = art[:k] + picks_box(cat, SITECFG["picks_title_long"]) + art[k:]
+            art = art[:k] + picks_box(cat, SITECFG["picks_title_long"]) + vc_box(cat) + art[k:]
         else:
-            art += picks_box(cat, SITECFG["picks_title_long"])
+            art += picks_box(cat, SITECFG["picks_title_long"]) + vc_box(cat)
         cu = "category/%s.html" % cat_slug(cat)
         body = ('%s<article><a class="tag" href="../%s">%s</a><span class="prtag">PR</span><span class="date">%s</span><h1>%s</h1>%s'
                 '<div class="lead"><strong>この記事でわかること</strong>%s</div>%s</article>%s%s%s'
