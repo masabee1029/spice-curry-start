@@ -9,6 +9,8 @@
     ---
     本文（Markdown の簡易版: ## 見出し, - 箇条書き, 1. 番号, **太字**, [文字](URL), | 表 |）
     商品ボタン: [[shop:検索キーワード|表示名]]　宿のボタン: [[travel:地名や会場名|表示名]]
+    動くグラフ: [[chart:種類|題名|ラベル=数値, ラベル=数値|単位|出典や注記]]（種類: bar / counter / donut / line。
+    画面に入ると棒が伸びる・数字が数え上がる・円が回り込む・線が描かれる。「もう一度」ボタンと表で見る欄つき。数値は本当のものだけ）
 
 site.json の任意項目: featured（「はじめての方へ」に出す記事の slug の並び）、profile_name /
 profile_html（サイドバーと著者ボックス。無ければ about_html の2段落目）、category_slugs（{"カテゴリ名": "url用の英字"}）、
@@ -119,6 +121,87 @@ def inline(s):
         return '<a href="%s"%s>%s</a>' % (url, ' target="_blank" rel="noopener"' if ext else "", m.group(1))
     return re.sub(r"\[([^\]]+)\]\(([^)]+)\)", link, s)
 
+# ---------- 動くグラフ（[[chart:...]]） ----------
+CHART_JS = """<script>(function(){if(window.__kxc)return;window.__kxc=1;var R=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function num(el,go){var n=+el.dataset.v,d=(el.dataset.v.split(".")[1]||"").length,t0=null;if(R||!go){el.textContent=n.toLocaleString("ja-JP",{minimumFractionDigits:d,maximumFractionDigits:d});return}
+function st(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1400,1);el.textContent=(n*(1-Math.pow(1-p,3))).toLocaleString("ja-JP",{minimumFractionDigits:d,maximumFractionDigits:d});if(p<1)requestAnimationFrame(st)}requestAnimationFrame(st);setTimeout(function(){el.textContent=n.toLocaleString("ja-JP",{minimumFractionDigits:d,maximumFractionDigits:d})},1600)}
+function play(c){c.classList.remove("in");void c.offsetWidth;c.classList.add("in");c.querySelectorAll("[data-v]").forEach(function(e){num(e,true)})}
+document.querySelectorAll(".kxc").forEach(function(c){var b=c.querySelector(".kxc-re");if(b)b.addEventListener("click",function(){play(c)});
+if(R||!("IntersectionObserver" in window)){c.classList.add("in");return}c.classList.add("ready");
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(c);play(c)}})},{threshold:.35});io.observe(c)})})();</script>"""
+
+CHART_CSS = """
+.kxc{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--bar:var(--accent);border:1px solid var(--line);border-radius:16px;background:var(--card);padding:18px 18px 12px;margin:24px 0}
+@media (prefers-color-scheme:dark){.kxc{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500}}
+.kxc-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px}.kxc-h strong{font-size:16px}
+.kxc-re{font-size:12px;border:1px solid var(--line);background:var(--soft);color:var(--fg);border-radius:99px;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.kxc-note{font-size:12px;color:var(--muted);margin:8px 0 0}
+.kxc details{font-size:13px;margin-top:6px}.kxc details summary{cursor:pointer;color:var(--muted)}
+.kxc-row{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;gap:10px;align-items:center;margin:8px 0;font-size:14px}
+.kxc-track{height:14px;border-radius:0 4px 4px 0;background:transparent;border-left:1px solid var(--muted);position:relative}
+.kxc-fill{display:block;height:100%;width:var(--w);background:var(--bar);border-radius:0 4px 4px 0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.kxc.ready .kxc-fill{width:0}.kxc.ready.in .kxc-fill{width:var(--w)}
+.kxc-row:hover .kxc-fill{filter:brightness(1.12)}
+.kxc-val{font-variant-numeric:tabular-nums;font-weight:700;min-width:3em;text-align:right}
+.kxc-cnt{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.kxc-cnt div{text-align:center;background:var(--soft);border-radius:12px;padding:14px 6px}
+.kxc-cnt b{display:block;font-size:clamp(28px,5vw,40px);line-height:1.15;font-variant-numeric:tabular-nums}.kxc-cnt>div>span{font-size:12px;color:var(--muted)}
+.kxc-donut{display:flex;flex-wrap:wrap;gap:16px;align-items:center}.kxc-donut svg{width:170px;height:170px;flex:0 0 auto}
+.kxc-seg{fill:none;stroke-width:22;transition:stroke-dasharray 1.2s ease-out}
+.kxc.ready:not(.in) .kxc-seg{stroke-dasharray:0 1000!important;transition:none}.kxc.ready.in .kxc-seg{transition-delay:var(--d)}
+.kxc-leg{list-style:none;padding:0;margin:0;font-size:14px}.kxc-leg li{display:flex;gap:8px;align-items:center;margin:4px 0}.kxc-leg i{width:12px;height:12px;border-radius:3px;background:var(--c);flex:0 0 auto}
+.kxc-line svg{width:100%;height:auto;overflow:visible}.kxc-path{fill:none;stroke:var(--bar);stroke-width:2;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 1.6s ease-in-out}
+.kxc.ready .kxc-path{stroke-dashoffset:1}.kxc.ready.in .kxc-path{stroke-dashoffset:0}
+.kxc-dot{fill:var(--bar);stroke:var(--card);stroke-width:2}.kxc-dot:hover{r:6}
+.kxc-ax{stroke:var(--line);stroke-width:1}.kxc-t{font-size:11px;fill:var(--muted)}.kxc-tv{font-size:12px;fill:var(--fg);font-weight:700}
+@media (prefers-reduced-motion:reduce){.kxc *{transition:none!important}}
+"""
+
+def chart_box(kind, title, data, unit="", note=""):
+    e = html.escape
+    pts = []
+    for part in re.split(r"[,、，]\s*", data.strip()):
+        if "=" in part:
+            k, v = part.rsplit("=", 1)
+            pts.append((k.strip(), v.strip().replace(",", "")))
+    if not pts:
+        return ""
+    vals = [float(v) for _, v in pts]
+    u = e(unit)
+    fmt = lambda v: "{:,}".format(float(v)).rstrip("0").rstrip(".") if "." in v else "{:,}".format(int(float(v)))
+    nv = lambda v: '<span data-v="%s">%s</span>' % (e(v), fmt(v))
+    if kind == "counter":
+        body = '<div class="kxc-cnt">%s</div>' % "".join('<div><b>%s<small style="font-size:.45em">%s</small></b><span>%s</span></div>' % (nv(v), u, e(k)) for k, v in pts)
+    elif kind == "donut":
+        tot = sum(vals) or 1
+        C, acc, segs, leg = 2 * 3.14159 * 60, 0.0, [], []
+        for n, ((k, v), f) in enumerate(zip(pts[:4], vals[:4])):
+            L = C * f / tot
+            segs.append('<circle class="kxc-seg" cx="85" cy="85" r="60" style="stroke:var(--s%d);stroke-dasharray:%.2f %.2f;stroke-dashoffset:%.2f;--d:%.1fs" transform="rotate(-90 85 85)"><title>%s %s%s（%.0f%%）</title></circle>'
+                        % (n + 1, max(L - 2, 0), C, -acc, n * 0.25, e(k), e(v), u, 100 * f / tot))
+            leg.append('<li><i style="--c:var(--s%d)"></i>%s <b>%s%s</b>（%.0f%%）</li>' % (n + 1, e(k), nv(v), u, 100 * f / tot))
+            acc += L
+        body = '<div class="kxc-donut"><svg viewBox="0 0 170 170" role="img" aria-label="%s">%s</svg><ul class="kxc-leg">%s</ul></div>' % (e(title), "".join(segs), "".join(leg))
+    elif kind == "line":
+        W, H, P = 600, 220, 30
+        lo, hi = min(0, min(vals)), max(vals) or 1
+        xs = [P + (W - 2 * P) * i / max(len(vals) - 1, 1) for i in range(len(vals))]
+        ys = [H - P - (H - 2 * P) * (v - lo) / ((hi - lo) or 1) for v in vals]
+        path = " ".join("%s%.1f %.1f" % ("M" if i == 0 else "L", x, y) for i, (x, y) in enumerate(zip(xs, ys)))
+        dots = "".join('<circle class="kxc-dot" cx="%.1f" cy="%.1f" r="4"><title>%s：%s%s</title></circle><text class="kxc-t" x="%.1f" y="%d" text-anchor="middle">%s</text>'
+                       % (x, y, e(k), e(v), u, x, H - 8, e(k)) for (k, v), x, y in zip(pts, xs, ys))
+        last = '<text class="kxc-tv" x="%.1f" y="%.1f" text-anchor="end">%s%s</text>' % (xs[-1], ys[-1] - 10, fmt(pts[-1][1]), u)
+        body = ('<div class="kxc-line"><svg viewBox="0 0 %d %d" role="img" aria-label="%s"><line class="kxc-ax" x1="%d" y1="%d" x2="%d" y2="%d"/>'
+                '<path class="kxc-path" pathLength="1" d="%s"/>%s%s</svg></div>' % (W, H, e(title), P, H - P, W - P, H - P, path, dots, last))
+    else:
+        mx = max(vals) or 1
+        body = "".join('<div class="kxc-row" title="%s：%s%s"><span>%s</span><span class="kxc-track"><span class="kxc-fill" style="--w:%.1f%%"></span></span><span class="kxc-val">%s%s</span></div>'
+                       % (e(k), e(v), u, e(k), 100 * f / mx, nv(v), u) for (k, v), f in zip(pts, vals))
+    table = '<details><summary>数字を表で見る</summary><div class="tbl"><table><tr><th>項目</th><th>数値</th></tr>%s</table></div></details>' % "".join(
+        "<tr><td>%s</td><td>%s%s</td></tr>" % (e(k), fmt(v), u) for k, v in pts)
+    return ('<figure class="kxc"><div class="kxc-h"><strong>%s</strong><button type="button" class="kxc-re">もう一度</button></div>%s%s%s</figure>'
+            % (e(title), body, ('<p class="kxc-note">%s</p>' % inline(note)) if note else "", table))
+
 def md(text):
     out, lines, i = [], text.strip("\n").split("\n"), 0
     toc = []
@@ -127,6 +210,9 @@ def md(text):
         m = re.match(r"\[\[(shop|travel):(.+?)\|(.+?)\]\]$", ln.strip())
         if not ln.strip():
             i += 1; continue
+        mc = re.match(r"\[\[chart:(bar|counter|donut|line)\|(.+?)\|(.+?)(?:\|(.*?))?(?:\|(.*?))?\]\]$", ln.strip())
+        if mc:
+            out.append(chart_box(mc.group(1), mc.group(2), mc.group(3), mc.group(4) or "", mc.group(5) or "")); i += 1; continue
         if m:
             out.append((travel_box if m.group(1) == "travel" else shop_box)(m.group(2), m.group(3))); i += 1; continue
         if ln.startswith("## "):
@@ -253,7 +339,7 @@ footer a{color:var(--muted);margin-right:14px}.fcats{margin-bottom:10px}
 
 for _k, _v in SITECFG["colors"].items():
     CSS = CSS.replace(_k, _v)
-CSS += SITECFG.get("extra_css", "")
+CSS += CHART_CSS + SITECFG.get("extra_css", "")
 
 GA_ID = (CFG.get("ga_measurement_id") or "").strip()
 GA = ("""<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
@@ -427,7 +513,7 @@ def build():
                 % (crumbs([("ホーム", "../index.html"), (cat, "../" + cu), (a["title"], None)]),
                    cu, e(cat), a["date"], e(a["title"]),
                    ('<img class="eyecatch" src="../img/articles/%s.jpg" alt="">' % a["slug"]) if IMAGES else "",
-                   e(a["description"]), art + next_step_box(), share(SITE + a["url"], a["title"]), author_box("../"), rel))
+                   e(a["description"]), art + next_step_box() + (CHART_JS if 'class="kxc"' in art else ""), share(SITE + a["url"], a["title"]), author_box("../"), rel))
         ld = jsonld({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "description": a["description"],
                      "datePublished": a["date"], "image": SITE + (("img/articles/%s.jpg" % a["slug"]) if IMAGES else "og.png"),
                      "author": {"@type": "Person", "name": SITECFG.get("profile_name", "運営者"), "url": SITE + "about.html"},

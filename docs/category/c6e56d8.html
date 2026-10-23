@@ -70,6 +70,31 @@ aside .picks{margin:0 0 20px}
 footer{border-top:1px solid var(--line);background:var(--card);padding:24px 0 40px;font-size:13px;color:var(--muted)}
 footer a{color:var(--muted);margin-right:14px}.fcats{margin-bottom:10px}
 .prnote{border-top:1px dashed var(--line);margin-top:14px;padding-top:12px}
+
+.kxc{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--bar:var(--accent);border:1px solid var(--line);border-radius:16px;background:var(--card);padding:18px 18px 12px;margin:24px 0}
+@media (prefers-color-scheme:dark){.kxc{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500}}
+.kxc-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px}.kxc-h strong{font-size:16px}
+.kxc-re{font-size:12px;border:1px solid var(--line);background:var(--soft);color:var(--fg);border-radius:99px;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.kxc-note{font-size:12px;color:var(--muted);margin:8px 0 0}
+.kxc details{font-size:13px;margin-top:6px}.kxc details summary{cursor:pointer;color:var(--muted)}
+.kxc-row{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;gap:10px;align-items:center;margin:8px 0;font-size:14px}
+.kxc-track{height:14px;border-radius:0 4px 4px 0;background:transparent;border-left:1px solid var(--muted);position:relative}
+.kxc-fill{display:block;height:100%;width:var(--w);background:var(--bar);border-radius:0 4px 4px 0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.kxc.ready .kxc-fill{width:0}.kxc.ready.in .kxc-fill{width:var(--w)}
+.kxc-row:hover .kxc-fill{filter:brightness(1.12)}
+.kxc-val{font-variant-numeric:tabular-nums;font-weight:700;min-width:3em;text-align:right}
+.kxc-cnt{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.kxc-cnt div{text-align:center;background:var(--soft);border-radius:12px;padding:14px 6px}
+.kxc-cnt b{display:block;font-size:clamp(28px,5vw,40px);line-height:1.15;font-variant-numeric:tabular-nums}.kxc-cnt>div>span{font-size:12px;color:var(--muted)}
+.kxc-donut{display:flex;flex-wrap:wrap;gap:16px;align-items:center}.kxc-donut svg{width:170px;height:170px;flex:0 0 auto}
+.kxc-seg{fill:none;stroke-width:22;transition:stroke-dasharray 1.2s ease-out}
+.kxc.ready:not(.in) .kxc-seg{stroke-dasharray:0 1000!important;transition:none}.kxc.ready.in .kxc-seg{transition-delay:var(--d)}
+.kxc-leg{list-style:none;padding:0;margin:0;font-size:14px}.kxc-leg li{display:flex;gap:8px;align-items:center;margin:4px 0}.kxc-leg i{width:12px;height:12px;border-radius:3px;background:var(--c);flex:0 0 auto}
+.kxc-line svg{width:100%;height:auto;overflow:visible}.kxc-path{fill:none;stroke:var(--bar);stroke-width:2;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 1.6s ease-in-out}
+.kxc.ready .kxc-path{stroke-dashoffset:1}.kxc.ready.in .kxc-path{stroke-dashoffset:0}
+.kxc-dot{fill:var(--bar);stroke:var(--card);stroke-width:2}.kxc-dot:hover{r:6}
+.kxc-ax{stroke:var(--line);stroke-width:1}.kxc-t{font-size:11px;fill:var(--muted)}.kxc-tv{font-size:12px;fill:var(--fg);font-weight:700}
+@media (prefers-reduced-motion:reduce){.kxc *{transition:none!important}}
 </style><script async src="https://www.googletagmanager.com/gtag/js?id=G-EHWF25C1RB"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EHWF25C1RB');</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://masabee1029.github.io/spice-curry-start/index.html"}, {"@type": "ListItem", "position": 2, "name": "スパイス", "item": "https://masabee1029.github.io/spice-curry-start/category/c6e56d8.html"}]}</script></head><body>
 <header><div class="wrap"><div class="top"><a class="logo" href="../index.html">はじめての<span>スパイス</span>カレー</a><span class="tagline">3つのスパイスから始めるおうちカレー入門</span></div>
