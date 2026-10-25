@@ -507,5 +507,42 @@
    "url": "https://px.a8.net/svt/ejp?a8mat=4BENDR+1B1B42+1QM6+HZAGY",
    "beacon": "https://www10.a8.net/0.gif?a8mat=4BENDR+1B1B42+1QM6+HZAGY"
   }
+ ],
+ "a8_ads": [
+  {
+   "name": "Oisix おためしセット",
+   "note": "時短で作れるミールキットを、お得に試せる",
+   "btn": "おためしを見る",
+   "cats": [
+    "レシピ",
+    "基本",
+    "スパイス"
+   ],
+   "url": "https://px.a8.net/svt/ejp?a8mat=4BENDR+1AFVIA+3RK+2TBJQA",
+   "beacon": "https://www11.a8.net/0.gif?a8mat=4BENDR+1AFVIA+3RK+2TBJQA"
+  },
+  {
+   "name": "ヨシケイ お試し5days",
+   "note": "栄養士の献立で、ミールキットを5日間試せる",
+   "btn": "お試しを見る",
+   "cats": [
+    "レシピ",
+    "基本"
+   ],
+   "url": "https://px.a8.net/svt/ejp?a8mat=4BENDR+1B1B42+1QM6+HZAGY",
+   "beacon": "https://www18.a8.net/0.gif?a8mat=4BENDR+1B1B42+1QM6+HZAGY"
+  },
+  {
+   "name": "アーユルヴェーダ・スパイス検定",
+   "note": "スパイスの知識をオンラインで学んで資格にできる",
+   "btn": "講座を見る",
+   "cats": [
+    "スパイス",
+    "基本",
+    "道具"
+   ],
+   "url": "https://px.a8.net/svt/ejp?a8mat=4BENDR+19UFWI+4N8K+BWVTE",
+   "beacon": "https://www19.a8.net/0.gif?a8mat=4BENDR+19UFWI+4N8K+BWVTE"
+  }
  ]
 }

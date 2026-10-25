@@ -93,11 +93,11 @@ def picks_box(cat, title, compact=False):
         for q, label, note in (PICKS.get(cat, DEFAULT_PICKS)[:2] if compact else PICKS.get(cat, DEFAULT_PICKS)))
     return '<div class="picks"><div class="picks-h">%s</div>%s</div>' % (e(title), items)
 
-# ---------- バリューコマースの提携広告（site.json の vc_ads、2026-10-23 追加） ----------
-VC_ADS = SITECFG.get("vc_ads", [])
+# ---------- ASP の提携広告（site.json の vc_ads＝バリューコマース、a8_ads＝A8.net。2026-10-23 追加） ----------
+VC_ADS = SITECFG.get("vc_ads", []) + SITECFG.get("a8_ads", [])
 
 def vc_box(cat):
-    """記事のカテゴリに合う VC 広告（cats が空なら全記事）を最大3件。広告がなければ何も出さない。"""
+    """記事のカテゴリに合う ASP 広告（cats が空なら全記事）を最大3件。広告がなければ何も出さない。"""
     e = html.escape
     ads = [a for a in VC_ADS if a.get("url") and (not a.get("cats") or cat in a["cats"])][:3]
     if not ads:
