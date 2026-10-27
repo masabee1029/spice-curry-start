@@ -15,7 +15,7 @@
 site.json の任意項目: featured（「はじめての方へ」に出す記事の slug の並び）、profile_name /
 profile_html（サイドバーと著者ボックス。無ければ about_html の2段落目）、category_slugs（{"カテゴリ名": "url用の英字"}）、
 next_step_html（全記事の末尾＝まとめの後に出す「次の一歩」ボックス。読者の小さな一歩・問いかけ・感謝）
-hero_html（トップの見出し部分を差し替える HTML。{N_ARTICLES} {N_CATS} は記事数・カテゴリ数に置き換え）、extra_css（追加の CSS）
+hero_html（トップの見出し部分を差し替える HTML。{N_ARTICLES} {N_CATS} は記事数・カテゴリ数に置き換え）、extra_css（追加の CSS）、font_import（先頭に置く @import の CSS。サイトごとの文字）
 """
 import hashlib, html, json, os, re, shutil, urllib.parse
 from datetime import date
@@ -340,6 +340,7 @@ footer a{color:var(--muted);margin-right:14px}.fcats{margin-bottom:10px}
 for _k, _v in SITECFG["colors"].items():
     CSS = CSS.replace(_k, _v)
 CSS += CHART_CSS + SITECFG.get("extra_css", "")
+CSS = SITECFG.get("font_import", "") + CSS  # 2026-10-27 サイトごとの文字（Google Fonts の @import は先頭に置く）
 
 GA_ID = (CFG.get("ga_measurement_id") or "").strip()
 GA = ("""<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
