@@ -15,7 +15,7 @@
 site.json の任意項目: featured（「はじめての方へ」に出す記事の slug の並び）、profile_name /
 profile_html（サイドバーと著者ボックス。無ければ about_html の2段落目）、category_slugs（{"カテゴリ名": "url用の英字"}）、
 next_step_html（全記事の末尾＝まとめの後に出す「次の一歩」ボックス。読者の小さな一歩・問いかけ・感謝）
-hero_html（トップの見出し部分を差し替える HTML。{N_ARTICLES} {N_CATS} は記事数・カテゴリ数に置き換え）、extra_css（追加の CSS）、font_import（先頭に置く @import の CSS。サイトごとの文字）、article_js（記事ページの最後に入れる script。2026-10-27）
+hero_html（トップの見出し部分を差し替える HTML。{N_ARTICLES} {N_CATS} は記事数・カテゴリ数に置き換え）、extra_css（追加の CSS）、font_import（先頭に置く @import の CSS。サイトごとの文字）、article_js（記事ページの最後に入れる script。2026-10-27）、category_head_html（カテゴリページの見出し。{CAT} {N} {NO} {N_CATS} {N_ALL} {NEW} {INTRO} {OTHERS}）、category_intros（{"カテゴリ名": "紹介文"}）、category_js（カテゴリページの最後に入れる script）
 """
 import hashlib, html, json, os, re, shutil, urllib.parse
 from datetime import date
@@ -481,10 +481,17 @@ def build():
     for c, n in CATS:
         items = [a for a in arts if a.get("category") == c]
         url = "category/%s.html" % cat_slug(c)
-        body = (crumbs([("ホーム", "../index.html"), (c, None)]) +
-                '<h1 class="sec-h" style="margin-top:0">%s の記事一覧（%d件）</h1>' % (e(c), n) +
-                '<div class="cards">%s</div>' % "".join(card(a, "../") for a in items) +
-                picks_box(c, SITECFG["picks_title_long"]))
+        head = '<h1 class="sec-h" style="margin-top:0">%s の記事一覧（%d件）</h1>' % (e(c), n)
+        if SITECFG.get("category_head_html"):  # 2026-10-27 カテゴリページの見出しをサイトごとに
+            no = [x for x, _ in CATS].index(c) + 1
+            others = "".join('<a href="%s.html">%s<small>%d</small></a>' % (cat_slug(x), e(x), k) for x, k in CATS if x != c)
+            head = SITECFG["category_head_html"]
+            for k, v in (("{CAT}", e(c)), ("{N}", str(n)), ("{NO}", "%02d" % no), ("{N_CATS}", str(len(CATS))), ("{N_ALL}", str(len(arts))),
+                         ("{NEW}", items[0]["date"]), ("{INTRO}", (SITECFG.get("category_intros") or {}).get(c, "")), ("{OTHERS}", others)):
+                head = head.replace(k, v)
+        body = (crumbs([("ホーム", "../index.html"), (c, None)]) + '<div class="cx-page">' + head +
+                '<div class="cards">%s</div>' % "".join(card(a, "../") for a in items) + '</div>' +
+                picks_box(c, SITECFG["picks_title_long"]) + SITECFG.get("category_js", ""))
         write(url, page("%sの記事一覧" % c, "%s「%s」カテゴリの記事一覧。" % (NAME, c), body, url, 1,
                         ld=crumbs_ld([("ホーム", "index.html"), (c, url)]), cat_on=c))
 

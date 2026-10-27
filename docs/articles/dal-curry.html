@@ -186,6 +186,34 @@ article h2.ax-sum::before{content:"★"}
 article ul li::marker{content:"● ";color:#d4920f}
 article ol li::marker{font-family:"Dela Gothic One",sans-serif;color:#b8321c}
 li.ax-tick::before,tr.ax-tick td:first-child::before{border-color:#3a2416;opacity:1;background:#fffaf0}li.ax-tick.done::after,tr.ax-tick.done td:first-child::after{color:#b8321c}
+
+/* category-base: 2026-10-27 カテゴリページの共通部分 */
+.cx-page .cards{counter-reset:none}
+.cx-page .card{position:relative;animation:cxin .5s both;animation-delay:calc(var(--i,0)*60ms)}
+@keyframes cxin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.cx-page .card{animation:none}}
+.cx-head{position:relative;margin:4px 0 6px}.cx-head h1{margin:0}
+.cx-intro{margin:8px 0 0}
+.cx-meter{display:flex;align-items:center;gap:10px;margin:12px 0 0;font-size:13px}.cx-meter span{white-space:nowrap}.cx-meter b{font-size:1.25em}
+.cx-meter i{position:relative;flex:1;height:8px;border-radius:99px;overflow:hidden;max-width:240px}
+.cx-meter i::after{content:"";position:absolute;left:0;top:0;bottom:0;background:var(--cxm,#888);width:var(--w,0);transition:width .9s ease}
+.cx-sort{display:inline-flex;gap:4px;margin:12px 0 0}.cx-sort button{font:inherit;font-size:13px;padding:4px 12px;cursor:pointer}
+.cx-badge{position:absolute;top:10px;right:10px;font-size:12px;font-weight:700;padding:2px 10px;z-index:2}
+.cx-others{margin:18px 0 8px}.cx-others strong{display:block;font-size:13px;margin-bottom:8px}.cx-others div{display:flex;flex-wrap:wrap;gap:8px}
+.cx-others a{text-decoration:none;font-size:14px;padding:5px 12px}.cx-others small{margin-left:6px;opacity:.7}
+
+/* category: recipe-card (2026-10-27) */
+.cx-recipe{background:#fffaf0 repeating-linear-gradient(transparent 0 31px,#ecdcb8 31px 32px);border:3px solid #3a2416;padding:18px 20px 18px 22px;box-shadow:8px 8px 0 #b8321c;margin-right:8px}
+.cx-stamp{position:absolute;right:16px;top:-14px;width:76px;height:76px;border-radius:50%;border:3px double #b8321c;color:#b8321c;background:#fffaf0;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(12deg)}
+.cx-stamp small{font-size:10px;letter-spacing:.2em;font-weight:700}.cx-stamp b{font-family:"Dela Gothic One",sans-serif;font-weight:400;font-size:26px;line-height:1}
+.cx-eye{display:inline-block;background:#d4920f;color:#3a2416;font-size:12px;font-weight:700;padding:1px 10px}
+.cx-recipe h1{font-family:"Dela Gothic One",sans-serif;font-weight:400;font-size:clamp(28px,4vw,38px);color:#3a2416;margin-top:6px;padding-right:80px}.cx-recipe h1 small{font-size:.5em;color:#b8321c}
+.cx-page{--cxm:#b8321c}.cx-meter i{background:#efe2c4;border:2px solid #3a2416;border-radius:0}
+.cx-sort button{background:#fffaf0;color:#3a2416;border:2px solid #3a2416;border-radius:0}.cx-sort button.on{background:#3a2416;color:#fff3dc}
+.cx-page .card{box-shadow:5px 5px 0 #d4920f}.cx-page .card:nth-child(3n+2){box-shadow:5px 5px 0 #b8321c}.cx-page .card:nth-child(3n){box-shadow:5px 5px 0 #4f7a3a}
+.cx-page .card::before{content:attr(data-no);position:absolute;top:8px;left:8px;z-index:2;width:34px;height:34px;line-height:34px;text-align:center;border-radius:50%;background:#3a2416;color:#fff3dc;font-family:"Dela Gothic One",sans-serif;font-size:14px}
+.cx-badge{background:#fffaf0;color:#b8321c;border:2px solid #b8321c;transform:rotate(-8deg)}
+.cx-others a{background:#fffaf0;border:2px solid #3a2416;color:#3a2416;box-shadow:3px 3px 0 #d4920f}.cx-others strong{font-family:"Dela Gothic One",sans-serif;font-weight:400;font-size:16px}
 </style><script async src="https://www.googletagmanager.com/gtag/js?id=G-EHWF25C1RB"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EHWF25C1RB');</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "ダルカレー（豆カレー）の作り方｜レンズ豆で作るやさしい味のレシピ", "description": "皮むきレンズ豆で作るダルカレー（豆カレー）のレシピです。浸水なしで作れる手軽さ、2〜3人分の材料表、火加減と時間の目安つきの手順、香りを決める仕上げのテンパリング、とろみの調整や保存のコツまで解説します。", "datePublished": "2026-10-13", "image": "https://masabee1029.github.io/spice-curry-start/img/articles/dal-curry.jpg", "author": {"@type": "Person", "name": "運営者", "url": "https://masabee1029.github.io/spice-curry-start/about.html"}, "publisher": {"@type": "Organization", "name": "はじめてのスパイスカレー"}, "mainEntityOfPage": "https://masabee1029.github.io/spice-curry-start/articles/dal-curry.html"}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://masabee1029.github.io/spice-curry-start/index.html"}, {"@type": "ListItem", "position": 2, "name": "レシピ", "item": "https://masabee1029.github.io/spice-curry-start/category/c49d41e.html"}, {"@type": "ListItem", "position": 3, "name": "ダルカレー（豆カレー）の作り方｜レンズ豆で作るやさしい味のレシピ", "item": "https://masabee1029.github.io/spice-curry-start/articles/dal-curry.html"}]}</script></head><body>
 <header><div class="wrap"><div class="top"><a class="logo" href="../index.html">はじめての<span>スパイス</span>カレー</a><span class="tagline">3つのスパイスから始めるおうちカレー入門</span></div>
@@ -225,6 +253,8 @@ li.ax-tick::before,tr.ax-tick td:first-child::before{border-color:#3a2416;opacit
 <ul><li>皮むきのレンズ豆なら浸水不要で、約20分で煮える</li><li>豆を煮るときに出る泡はすくい取る</li><li>最後に香りの油（テンパリング）を加えて、香りを決める</li><li>とろみは水と煮詰め具合で調整する</li><li>鍋底が焦げやすいので、ときどき底から混ぜる</li></ul>
 <p>肉のカレーと組み合わせて、2種類のカレーを盛り合わせるのも楽しい食べ方です。肉のカレーは「<a href="basic-chicken-curry.html">基本のチキンカレーの作り方｜3つのスパイスで作るはじめてのスパイスカレー</a>」を参考にしてください。</p><div class="next"><div class="next-h">今日できる次の一歩</div><p>まずは、家にあるスパイスを確かめるところから。クミン・コリアンダー・ターメリックの3つがそろえば、次の休みに最初の1皿に挑戦できます。</p><p>あなたなら、どのカレーから作ってみますか？</p><p>最後まで読んでくださり、ありがとうございました。</p></div><script>(function(C){var R=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 var art=document.querySelector("article");if(!art)return;
+/* 読んだ記事を覚えておく（カテゴリページの「読んだ」印に使う。この端末の中だけ。同じ github.io の別サイトと混ざらないよう、パス全体で覚える） */
+try{var RK="ax-read",RL=JSON.parse(localStorage.getItem(RK)||"[]"),me=location.pathname;if(RL.indexOf(me)<0){RL.push(me);localStorage.setItem(RK,JSON.stringify(RL.slice(-300)))}}catch(e){}
 /* 読むのにかかる時間（1 分 500 字で計算） */
 var n=(art.innerText||"").replace(/\s/g,"").length,m=Math.max(1,Math.round(n/500)),d=art.querySelector(".date");
 if(d){var t=document.createElement("span");t.className="ax-time";t.textContent=C.time.replace("{m}",m);d.after(t)}
