@@ -16,6 +16,7 @@ site.json の任意項目: featured（「はじめての方へ」に出す記事
 profile_html（サイドバーと著者ボックス。無ければ about_html の2段落目）、category_slugs（{"カテゴリ名": "url用の英字"}）、
 next_step_html（全記事の末尾＝まとめの後に出す「次の一歩」ボックス。読者の小さな一歩・問いかけ・感謝）
 hero_html（トップの見出し部分を差し替える HTML。{N_ARTICLES} {N_CATS} は記事数・カテゴリ数に置き換え）、extra_css（追加の CSS）、font_import（先頭に置く @import の CSS。サイトごとの文字）、article_js（記事ページの最後に入れる script。2026-10-27）、category_head_html（カテゴリページの見出し。{CAT} {N} {NO} {N_CATS} {N_ALL} {NEW} {INTRO} {OTHERS}）、category_intros（{"カテゴリ名": "紹介文"}）、category_js（カテゴリページの最後に入れる script）
+ads_extra_html（about の「広告について」に足す HTML）、asp_names（プライバシーポリシーの広告欄に足す名前。例「・バリューコマース」）
 """
 import hashlib, html, json, os, re, shutil, urllib.parse
 from datetime import date
@@ -99,7 +100,7 @@ VC_ADS = SITECFG.get("vc_ads", []) + SITECFG.get("a8_ads", [])
 def vc_box(cat):
     """記事のカテゴリに合う ASP 広告（cats が空なら全記事）を最大3件。広告がなければ何も出さない。"""
     e = html.escape
-    ads = [a for a in VC_ADS if a.get("url") and (not a.get("cats") or cat in a["cats"])][:3]
+    ads = [a for a in VC_ADS if a.get("url") and (not a.get("cats") or cat in a["cats"])][:4]  # 2026-10-27: 3→4 件
     if not ads:
         return ""
     items = "".join(
@@ -109,6 +110,21 @@ def vc_box(cat):
            '<img src="%s" height="1" width="1" alt="" style="border:0">' % e(a["beacon"]) if a.get("beacon") else "")
         for a in ads)
     return '<div class="picks"><div class="picks-h">%s</div>%s</div>' % (e(SITECFG.get("vc_title", "あわせて使えるサービス")), items)
+
+
+# ---------- 著者の本（site.json の book_box。2026-10-25 本人指示「Kindle の本をサイトで紹介」） ----------
+def book_box(up="../"):
+    """まとめの前に出す「著者の本」枠。自分の本だと分かる見出しにする（ステマ規制）。本文の転載はしない。"""
+    b = SITECFG.get("book_box")
+    if not b or not b.get("asin"):
+        return ""
+    e = html.escape
+    url = "https://www.amazon.co.jp/dp/%s" % b["asin"] + (("?tag=" + CFG["amazon_tag"]) if CFG.get("amazon_tag") else "")
+    img = ('<img class="book-cover" loading="lazy" src="%simg/%s" alt="%s の表紙">' % (up, e(b["cover"]), e(b["title"]))) if b.get("cover") else ""
+    return ('<div class="picks book"><div class="picks-h">%s</div><div class="book-row">%s<div class="book-txt"><strong>%s</strong>'
+            '<span>%s</span><span class="book-note">%s</span>'
+            '<a class="btn amz" rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a></div></div></div>'
+            % (e(b.get("heading", "著者の本")), img, e(b["title"]), e(b.get("sub", "")), e(b.get("note", "")), e(url), e(b.get("btn", "Amazonで見る（Kindle）"))))
 
 # ---------- Markdown（簡易） ----------
 def inline(s):
@@ -321,6 +337,8 @@ code{background:var(--card);border:1px solid var(--line);border-radius:4px;paddi
 .avatar{flex:0 0 56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px}
 .author p{margin:4px 0 0;color:var(--muted)}
 .related{margin-top:24px}
+.book .book-row{display:flex;gap:14px;align-items:flex-start;padding-top:8px}.book-cover{width:96px;flex:0 0 96px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.book-txt{flex:1 1 200px}.book-txt span{display:block;font-size:13px;color:var(--muted);margin:2px 0}.book-txt .book-note{font-size:12.5px}.book-txt .btn{margin-top:8px}
 .next{background:var(--soft);border:2px dashed var(--accent2);border-radius:12px;padding:14px 18px;margin:32px 0 8px}
 .next-h{font-weight:800;color:var(--accent)}.next p{margin:6px 0 0}
 aside .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:20px;font-size:14px}
@@ -512,9 +530,9 @@ def build():
             art = toc + art
         k = art.rfind('<h2 id="s%d">' % len(a["toc"])) if a["toc"] else -1
         if k > 0:
-            art = art[:k] + picks_box(cat, SITECFG["picks_title_long"]) + vc_box(cat) + art[k:]
+            art = art[:k] + picks_box(cat, SITECFG["picks_title_long"]) + vc_box(cat) + book_box() + art[k:]
         else:
-            art += picks_box(cat, SITECFG["picks_title_long"]) + vc_box(cat)
+            art += picks_box(cat, SITECFG["picks_title_long"]) + vc_box(cat) + book_box()
         cu = "category/%s.html" % cat_slug(cat)
         body = ('%s<article><a class="tag" href="../%s">%s</a><span class="prtag">PR</span><span class="date">%s</span><h1>%s</h1>%s'
                 '<div class="lead"><strong>この記事でわかること</strong>%s</div>%s</article>%s%s%s'
@@ -530,12 +548,13 @@ def build():
         write(a["url"], page(a["title"], a["description"], body, a["url"], 1,
                              ("img/articles/%s.jpg" % a["slug"]) if IMAGES else "og.png", ld=ld, cat_on=cat))
     about = ('<article><h1>このサイトについて</h1>' + SITECFG["about_html"] +
-             '<h2>広告について</h2><p>当サイトは Amazonアソシエイト・楽天アフィリエイトに参加しており、紹介した商品の購入により運営者が紹介料を受け取ることがあります。Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。</p></article>')
+             '<h2>広告について</h2><p>当サイトは Amazonアソシエイト・楽天アフィリエイトに参加しており、紹介した商品の購入により運営者が紹介料を受け取ることがあります。Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。</p>'
+             + SITECFG.get("ads_extra_html", "") + '</article>')
     write("about.html", page("このサイトについて", NAME + "の運営方針と広告について。", about, "about.html"))
     privacy = """<article><h1>プライバシーポリシー</h1>
 <h2>アクセス解析</h2><p>当サイトは Google アナリティクスを利用しています。Cookie を使ってアクセス情報を収集しますが、個人を特定する情報は含みません。Cookie はブラウザの設定で無効にできます。</p>
-<h2>広告</h2><p>当サイトは Amazonアソシエイト・楽天アフィリエイトを利用しています。これらのサービスは Cookie を使用することがあります。</p>
-<h2>免責事項</h2><p>掲載内容の正確性には注意していますが、内容を保証するものではありません。当サイトの情報によって生じた損害について責任を負いかねます。</p></article>"""
+<h2>広告</h2><p>当サイトは Amazonアソシエイト・楽天アフィリエイト%sを利用しています。これらのサービスは Cookie を使用することがあります。</p>
+<h2>免責事項</h2><p>掲載内容の正確性には注意していますが、内容を保証するものではありません。当サイトの情報によって生じた損害について責任を負いかねます。</p></article>""" % SITECFG.get("asp_names", "")
     write("privacy.html", page("プライバシーポリシー", NAME + "のプライバシーポリシーと免責事項。", privacy, "privacy.html", sidebar=False))
     urls = ["index.html", "about.html", "privacy.html"] + ["category/%s.html" % cat_slug(c) for c, _ in CATS] + [a["url"] for a in arts]
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
