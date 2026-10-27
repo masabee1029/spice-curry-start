@@ -160,6 +160,32 @@ footer{background:#3a2416;color:#e9d8b8;border-top:0}footer a{color:#ffd27a}
 .hx-riso .hx-steps li{background:#fffaf0;border:2px solid #3a2416;padding:12px;display:grid;grid-template-columns:auto 1fr;column-gap:10px}
 .hx-riso .hx-steps b{grid-row:span 2;width:40px;height:40px;border-radius:50%;background:#b8321c;color:#fff3dc;font-family:"Dela Gothic One",sans-serif;font-weight:400;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 #3a2416}
 @media (max-width:760px){.hx-riso-top{grid-template-columns:1fr}.hx-recipe{transform:none}}
+
+/* article-base: 2026-10-27 記事ページの共通部分 */
+.ax-time{display:inline-block;font-size:12px;margin-left:8px}
+.ax-prog{position:fixed;left:0;right:0;top:0;height:4px;z-index:50;pointer-events:none}.ax-prog i{display:block;height:100%;width:0}
+.toc li.now>a{font-weight:700}
+.ax-tick{cursor:pointer}li.ax-tick{position:relative;padding-left:30px}ul>li.ax-tick{list-style:none}ul>li.ax-tick::marker{content:""!important}
+li.ax-tick::before,tr.ax-tick td:first-child::before{content:"";position:absolute;left:4px;top:.45em;width:16px;height:16px;border:2px solid currentColor;border-radius:4px;opacity:.55}
+.ax-tick.done{opacity:.55;text-decoration:line-through}li.ax-tick.done::after,tr.ax-tick.done td:first-child::after{content:"✓";position:absolute;left:7px;top:.05em;font-weight:800}
+tr.ax-tick td:first-child{position:relative;padding-left:32px}tr.ax-tick td:first-child::before{left:8px;top:.6em}tr.ax-tick.done td:first-child::after{left:11px;top:.2em}
+.ax-copy{display:block;margin:10px 0 0 auto;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+@media print{.ax-prog,.ax-size,.ax-copy{display:none}}
+
+/* article: recipe (2026-10-27) */
+.ax-prog{height:6px;background:#efe2c4;border-bottom:2px solid #3a2416}.ax-prog i{background:repeating-linear-gradient(90deg,#b8321c 0 10px,#d4920f 10px 20px)}
+.ax-time{background:#3a2416;color:#fff3dc;padding:0 8px;border-radius:2px}
+article h1{font-family:"Dela Gothic One",sans-serif;font-weight:400;line-height:1.5}
+.lead{background:#fffaf0 repeating-linear-gradient(transparent 0 27px,#ecdcb8 27px 28px);transform:rotate(-.4deg);box-shadow:5px 5px 0 #d4920f}.lead strong{font-size:0}.lead strong::before{content:"今日のレシピメモ";font-size:15px;font-family:"Dela Gothic One",sans-serif;color:#b8321c}
+.toc{counter-reset:sp}.toc strong{font-size:0}.toc strong::before{content:"この記事の手順";font-family:"Dela Gothic One",sans-serif;font-size:15px}
+.toc ol{list-style:none;padding-left:0}.toc li{counter-increment:sp;padding:3px 0}.toc li::before{content:counter(sp);display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:#b8321c;color:#fff3dc;font-size:12px;margin-right:8px}
+.toc li.now::before{background:#d4920f;color:#3a2416}
+article{counter-reset:sh}article h2{counter-increment:sh;padding-left:56px!important;position:relative}
+article h2::before{content:counter(sh);position:absolute;left:12px;top:50%;margin-top:-16px;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#d4920f;color:#3a2416;font-size:17px}
+article h2.ax-sum::before{content:"★"}
+article ul li::marker{content:"● ";color:#d4920f}
+article ol li::marker{font-family:"Dela Gothic One",sans-serif;color:#b8321c}
+li.ax-tick::before,tr.ax-tick td:first-child::before{border-color:#3a2416;opacity:1;background:#fffaf0}li.ax-tick.done::after,tr.ax-tick.done td:first-child::after{color:#b8321c}
 </style><script async src="https://www.googletagmanager.com/gtag/js?id=G-EHWF25C1RB"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EHWF25C1RB');</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://masabee1029.github.io/spice-curry-start/index.html"}, {"@type": "ListItem", "position": 2, "name": "スパイス", "item": "https://masabee1029.github.io/spice-curry-start/category/c6e56d8.html"}]}</script></head><body>
 <header><div class="wrap"><div class="top"><a class="logo" href="../index.html">はじめての<span>スパイス</span>カレー</a><span class="tagline">3つのスパイスから始めるおうちカレー入門</span></div>

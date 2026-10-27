@@ -15,7 +15,7 @@
 site.json の任意項目: featured（「はじめての方へ」に出す記事の slug の並び）、profile_name /
 profile_html（サイドバーと著者ボックス。無ければ about_html の2段落目）、category_slugs（{"カテゴリ名": "url用の英字"}）、
 next_step_html（全記事の末尾＝まとめの後に出す「次の一歩」ボックス。読者の小さな一歩・問いかけ・感謝）
-hero_html（トップの見出し部分を差し替える HTML。{N_ARTICLES} {N_CATS} は記事数・カテゴリ数に置き換え）、extra_css（追加の CSS）、font_import（先頭に置く @import の CSS。サイトごとの文字）
+hero_html（トップの見出し部分を差し替える HTML。{N_ARTICLES} {N_CATS} は記事数・カテゴリ数に置き換え）、extra_css（追加の CSS）、font_import（先頭に置く @import の CSS。サイトごとの文字）、article_js（記事ページの最後に入れる script。2026-10-27）
 """
 import hashlib, html, json, os, re, shutil, urllib.parse
 from datetime import date
@@ -514,7 +514,7 @@ def build():
                 % (crumbs([("ホーム", "../index.html"), (cat, "../" + cu), (a["title"], None)]),
                    cu, e(cat), a["date"], e(a["title"]),
                    ('<img class="eyecatch" src="../img/articles/%s.jpg" alt="">' % a["slug"]) if IMAGES else "",
-                   e(a["description"]), art + next_step_box() + (CHART_JS if 'class="kxc"' in art else ""), share(SITE + a["url"], a["title"]), author_box("../"), rel))
+                   e(a["description"]), art + next_step_box() + (CHART_JS if 'class="kxc"' in art else "") + SITECFG.get("article_js", ""), share(SITE + a["url"], a["title"]), author_box("../"), rel))
         ld = jsonld({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "description": a["description"],
                      "datePublished": a["date"], "image": SITE + (("img/articles/%s.jpg" % a["slug"]) if IMAGES else "og.png"),
                      "author": {"@type": "Person", "name": SITECFG.get("profile_name", "運営者"), "url": SITE + "about.html"},
