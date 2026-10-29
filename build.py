@@ -73,7 +73,7 @@ def refs_html(q):
     e = html.escape
     groups = []
     for src, fn in (("Amazon", amazon_link), ("楽天", rakuten_link)):
-        its = [it for it in items if (it.get("src") or "Amazon") == src]
+        its = [it for it in items if (it.get("src") or "Amazon") == src][:SITECFG.get("refs_max") or None]
         if its:
             groups.append('%s：%s' % (src, "・".join('<a rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a>'
                           % (e(fn(it.get("q") or it["name"])), e(it["name"])) for it in its)))
@@ -99,15 +99,19 @@ PR_LINE = "※この記事はプロモーション（広告）を含みます"
 PICKS = {k: [tuple(x) for x in v] for k, v in SITECFG["picks"].items()}
 DEFAULT_PICKS = [tuple(x) for x in SITECFG["default_picks"]]
 
+# site.json の任意キー（2026-10-30 追加）: pick_btn [Amazon の文字, 楽天の文字]、picks_foot（箱の最後の一言・問い）、refs_max（参考の本を店ごとに何冊まで）
+PICK_BTN = SITECFG.get("pick_btn") or ["Amazon", "楽天"]
+
 def picks_box(cat, title, compact=False):
     e = html.escape
     items = "".join(
         '<div class="pick"><div><strong>%s</strong><span>%s</span>%s</div>'
-        '<a class="btn amz" rel="nofollow sponsored noopener" target="_blank" href="%s">Amazon</a>'
-        '<a class="btn rkt" rel="nofollow sponsored noopener" target="_blank" href="%s">楽天</a></div>'
-        % (e(label), e(note), refs_html(q), e(amazon_link(q)), e(rakuten_link(q)))
+        '<a class="btn amz" rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a>'
+        '<a class="btn rkt" rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a></div>'
+        % (e(label), e(note), refs_html(q), e(amazon_link(q)), e(PICK_BTN[0]), e(rakuten_link(q)), e(PICK_BTN[1]))
         for q, label, note in (PICKS.get(cat, DEFAULT_PICKS)[:2] if compact else PICKS.get(cat, DEFAULT_PICKS)))
-    return '<div class="picks"><div class="picks-h">%s</div>%s</div>' % (e(title), items)
+    foot = '<p class="picks-foot">%s</p>' % e(SITECFG["picks_foot"]) if SITECFG.get("picks_foot") and not compact else ""
+    return '<div class="picks"><div class="picks-h">%s</div>%s%s</div>' % (e(title), items, foot)
 
 # ---------- ASP の提携広告（site.json の vc_ads＝バリューコマース、a8_ads＝A8.net。2026-10-23 追加） ----------
 VC_ADS = SITECFG.get("vc_ads", []) + SITECFG.get("a8_ads", [])
