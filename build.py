@@ -81,6 +81,21 @@ def refs_html(q):
 
 # ---------- カテゴリ別のおすすめ（全ページに出すアフィリエイト誘導） ----------
 IMAGES = bool(SITECFG.get("images")) and os.path.exists(os.path.join(ROOT, "make_images.py"))
+# AI 画像の明記（2026-10-29 本人指示。wiki「生成AI・AI画像の炎上を防ぐ」決まり 1）
+# no_ai_images: 図形と文字だけの予備画像に差し替えた記事の slug（画像生成AIで作り直さない印も兼ねる）
+# header_ai: ヘッダー画像が画像生成AI製なら true（既定 true）
+NO_AI = set(SITECFG.get("no_ai_images", []))
+
+def eyecatch_is_ai(slug):
+    """assets/articles/<slug>.jpg があり、no_ai_images に無ければ AI で作った画像（無ければ図形と文字の予備画像）"""
+    return IMAGES and slug not in NO_AI and os.path.exists(os.path.join(ROOT, "assets", "articles", slug + ".jpg"))
+
+def eyecatch_alt(a):
+    return ("AIで作成したイメージ画像：%s" if eyecatch_is_ai(a["slug"]) else "%s（図形と文字で作ったイメージ画像）") % a["title"]
+
+AI_NOTE = "この記事は下書きにAIを使い、内容は運営者が公式情報で確認しています。"
+AI_NOTE_IMG = "画像はAIで作成したイメージです。"
+PR_LINE = "※この記事はプロモーション（広告）を含みます"
 PICKS = {k: [tuple(x) for x in v] for k, v in SITECFG["picks"].items()}
 DEFAULT_PICKS = [tuple(x) for x in SITECFG["default_picks"]]
 
@@ -283,7 +298,7 @@ def load_articles():
 # ---------- レイアウト ----------
 # 収益化できている個人ブログ（SWELL / AFFINGER 系）でよく使われる作りに寄せている:
 # カテゴリのグローバルナビ、PCは2カラム（サイドバーに運営者・おすすめ商品・人気記事）、
-# パンくず、記事冒頭の小さな「PR」表記、著者ボックス、シェアボタン、カテゴリ別一覧ページ、
+# パンくず、記事タイトル直下の「プロモーション（広告）を含みます」表記（2026-10-29 通常の文字サイズに）、著者ボックス、シェアボタン、カテゴリ別一覧ページ、
 # 構造化データ（Article / BreadcrumbList）。広告表記の全文はフッター。
 CSS = """
 :root{--bg:#fbfaf7;--fg:#1f2328;--muted:#5b636e;--line:#e6e2da;--card:#fff;--soft:#f3f1ec;--accent:ACCENT_L;--accent2:ACCENT2_L}
@@ -353,6 +368,8 @@ aside .picks{margin:0 0 20px}
 footer{border-top:1px solid var(--line);background:var(--card);padding:24px 0 40px;font-size:13px;color:var(--muted)}
 footer a{color:var(--muted);margin-right:14px}.fcats{margin-bottom:10px}
 .prnote{border-top:1px dashed var(--line);margin-top:14px;padding-top:12px}
+.prline{margin:0 0 10px;color:var(--muted)}
+.ainote{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 """
 
 for _k, _v in SITECFG["colors"].items():
@@ -484,7 +501,7 @@ def build():
     if SITECFG.get("hero_html"):
         hero = SITECFG["hero_html"].replace("{N_ARTICLES}", str(len(arts))).replace("{N_CATS}", str(len(CATS)))
     if IMAGES:
-        hero = '<img class="hero-img" src="img/header.jpg" alt="%s">' % e(NAME) + hero
+        hero = '<img class="hero-img" src="img/header.jpg" alt="%s">' % e(("AIで作成したイメージ画像：" + NAME) if SITECFG.get("header_ai", True) else NAME) + hero
     home = hero + '<h2 class="sec-h">はじめての方へ：まず読みたい記事</h2><div class="cards">%s</div>' % "".join(card(a, "", "h3") for a in featured)
     home += picks_box("", SITECFG["home_picks_title"])
     home += '<h2 class="sec-h">新着記事</h2><div class="cards">%s</div>' % "".join(card(a, "", "h3") for a in arts[:6])
@@ -534,12 +551,12 @@ def build():
         else:
             art += picks_box(cat, SITECFG["picks_title_long"]) + vc_box(cat) + book_box()
         cu = "category/%s.html" % cat_slug(cat)
-        body = ('%s<article><a class="tag" href="../%s">%s</a><span class="prtag">PR</span><span class="date">%s</span><h1>%s</h1>%s'
+        body = ('%s<article><a class="tag" href="../%s">%s</a><span class="date">%s</span><h1>%s</h1><p class="prline">%s</p>%s'
                 '<div class="lead"><strong>この記事でわかること</strong>%s</div>%s</article>%s%s%s'
                 % (crumbs([("ホーム", "../index.html"), (cat, "../" + cu), (a["title"], None)]),
-                   cu, e(cat), a["date"], e(a["title"]),
-                   ('<img class="eyecatch" src="../img/articles/%s.jpg" alt="">' % a["slug"]) if IMAGES else "",
-                   e(a["description"]), art + next_step_box() + (CHART_JS if 'class="kxc"' in art else "") + SITECFG.get("article_js", ""), share(SITE + a["url"], a["title"]), author_box("../"), rel))
+                   cu, e(cat), a["date"], e(a["title"]), PR_LINE,
+                   ('<img class="eyecatch" src="../img/articles/%s.jpg" alt="%s">' % (a["slug"], e(eyecatch_alt(a)))) if IMAGES else "",
+                   e(a["description"]), art + next_step_box() + '<p class="ainote">%s%s</p>' % (AI_NOTE, AI_NOTE_IMG if eyecatch_is_ai(a["slug"]) else "") + (CHART_JS if 'class="kxc"' in art else "") + SITECFG.get("article_js", ""), share(SITE + a["url"], a["title"]), author_box("../"), rel))
         ld = jsonld({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "description": a["description"],
                      "datePublished": a["date"], "image": SITE + (("img/articles/%s.jpg" % a["slug"]) if IMAGES else "og.png"),
                      "author": {"@type": "Person", "name": SITECFG.get("profile_name", "運営者"), "url": SITE + "about.html"},
