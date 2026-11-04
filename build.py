@@ -584,5 +584,48 @@ def build():
     write(".nojekyll", "")
     print("built %d articles, %d categories" % (len(arts), len(CATS)))
 
+
+# ---------- スクロールで現れる動き（2026-11-05 本人指示「今季アニメみたいなアニメーションを他のページ・他のサイトにも。同じに見えないように」） ----------
+# サイトごとに動きの種類（FX_VARIANT）を変えている。書き出した全 HTML の </body> の前に 1 回だけ入れる。
+# 動きを減らす設定の人・JS が動かない環境では何も隠さない。
+FX_CSS = {
+ "rise":   ".fx{opacity:0;transform:translateY(26px);filter:blur(4px)}.fx.fx-in{opacity:1;transform:none;filter:none;transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.2,1),filter .7s ease}",
+ "neon":   ".fx{opacity:0;transform:scale(.94)}.fx.fx-in{opacity:1;transform:none;transition:opacity .45s ease,transform .5s cubic-bezier(.3,1.4,.5,1);animation:fxglow 1.2s ease .1s}@keyframes fxglow{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 2px var(--accent,#c4f),0 0 22px var(--accent,#c4f)}}",
+ "stamp":  ".fx{opacity:0;transform:rotate(-3deg) scale(1.08)}.fx.fx-in{opacity:1;transform:none;transition:opacity .35s ease,transform .55s cubic-bezier(.3,1.6,.5,1)}",
+ "slideL": ".fx{opacity:0;transform:translateX(-38px)}.fx.fx-in{opacity:1;transform:none;transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}",
+ "slideR": ".fx{opacity:0;transform:translateX(30px)}.fx.fx-in{opacity:1;transform:none;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1)}",
+ "wipe":   ".fx{clip-path:inset(0 100% 0 0)}.fx.fx-in{clip-path:inset(0 0 0 0);transition:clip-path .8s cubic-bezier(.65,0,.35,1)}",
+ "zoom":   ".fx{opacity:0;transform:scale(.88)}.fx.fx-in{opacity:1;transform:none;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.9,.3,1.2)}",
+ "paper":  ".fx{opacity:0;transform:translateY(-32px) rotate(2.5deg)}.fx.fx-in{opacity:1;transform:none;transition:opacity .4s ease,transform .75s cubic-bezier(.34,1.56,.64,1)}",
+ "calm":   ".fx{opacity:0;transform:translateY(12px)}.fx.fx-in{opacity:1;transform:none;transition:opacity 1s ease,transform 1s ease}",
+ "heart":  ".fx{opacity:0;transform:scale(.78)}.fx.fx-in{opacity:1;transform:none;transition:opacity .4s ease,transform .6s cubic-bezier(.3,1.8,.5,1)}",
+ "skew":   ".fx{opacity:0;transform:translateY(34px) skewY(4deg)}.fx.fx-in{opacity:1;transform:none;transition:opacity .4s ease,transform .5s cubic-bezier(.2,.9,.2,1)}",
+ "mist":   ".fx{opacity:0;filter:blur(10px)}.fx.fx-in{opacity:1;filter:none;transition:opacity 1.1s ease,filter 1.2s ease}",
+ "curtain":".fx{clip-path:inset(0 50% 0 50%);opacity:.2}.fx.fx-in{clip-path:inset(0 0 0 0);opacity:1;transition:clip-path .75s cubic-bezier(.7,0,.3,1),opacity .5s ease}",
+ "ink":    ".fx{opacity:0;filter:blur(3px) saturate(0)}.fx.fx-in{opacity:1;filter:none;transition:opacity 1.3s ease,filter 1.6s ease}",
+ "bloom":  ".fx{opacity:0;transform:scale(1.06) rotate(-1deg);filter:blur(3px)}.fx.fx-in{opacity:1;transform:none;filter:none;transition:opacity .8s ease,transform .9s ease,filter .9s ease}",
+}
+def fx_snippet(variant, sel, step=70):
+    return ('<style id="fx-css">@media (prefers-reduced-motion:no-preference){%s}</style>'
+            '<script id="fx-js">(function(){if(!window.IntersectionObserver||matchMedia("(prefers-reduced-motion: reduce)").matches)return;'
+            'var L=document.querySelectorAll(%s);if(!L.length)return;'
+            'var o=new IntersectionObserver(function(es){var n=0;es.forEach(function(e){if(e.isIntersecting){var t=e.target;t.style.transitionDelay=Math.min(n++,6)*%d+"ms";t.classList.add("fx-in");o.unobserve(t);'
+            'setTimeout(function(){t.style.transitionDelay=""},1600)}})},{threshold:.12,rootMargin:"0px 0px -6%% 0px"});'
+            'L.forEach(function(el){el.classList.add("fx");o.observe(el)})})()</script>') % (FX_CSS[variant], json.dumps(sel), step)
+def fx_inject(out_dir, variant, sel):
+    """書き出した HTML 全部に動きを入れる（もう入っていれば入れ直す）"""
+    snip = fx_snippet(variant, sel); n = 0
+    for root, _, files in os.walk(out_dir):
+        for f in files:
+            if not f.endswith(".html"): continue
+            p = os.path.join(root, f); s = open(p, encoding="utf-8").read()
+            if "</body>" not in s or 'http-equiv="refresh"' in s: continue
+            s = re.sub(r'<style id="fx-css">.*?</script>', "", s, flags=re.S)
+            s = s.replace("</body>", snip + "</body>", 1)
+            open(p, "w", encoding="utf-8").write(s); n += 1
+    print("fx:", variant, n, "pages")
+
+
 if __name__ == "__main__":
     build()
+    fx_inject(OUT, 'stamp', 'main .card, main h2, main .eyecatch, main .tbl, main .picks, main .shop, main .toc, main .lead, main .author, main .next, main .note, main blockquote, aside .box')
