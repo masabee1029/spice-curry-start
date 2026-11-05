@@ -607,11 +607,14 @@ FX_CSS = {
 }
 def fx_snippet(variant, sel, step=70):
     return ('<style id="fx-css">@media (prefers-reduced-motion:no-preference){%s}</style>'
-            '<script id="fx-js">(function(){if(!window.IntersectionObserver||matchMedia("(prefers-reduced-motion: reduce)").matches)return;'
-            'var L=document.querySelectorAll(%s);if(!L.length)return;'
-            'var o=new IntersectionObserver(function(es){var n=0;es.forEach(function(e){if(e.isIntersecting){var t=e.target;t.style.transitionDelay=Math.min(n++,6)*%d+"ms";t.classList.add("fx-in");o.unobserve(t);'
-            'setTimeout(function(){t.style.transitionDelay=""},1600)}})},{threshold:.12,rootMargin:"0px 0px -6%% 0px"});'
-            'L.forEach(function(el){el.classList.add("fx");o.observe(el)})})()</script>') % (FX_CSS[variant], json.dumps(sel), step)
+            '<script id="fx-js">(function(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;'
+            'var L=[].slice.call(document.querySelectorAll(%s));if(!L.length)return;L.forEach(function(el){el.classList.add("fx")});'
+            # 2026-11-05: IntersectionObserver の合図が届かず透明のまま残る環境があったため、位置を直接見て出す
+            'function chk(){var h=window.innerHeight||document.documentElement.clientHeight;if(!h)return;var n=0;'
+            'L=L.filter(function(t){if(t.getBoundingClientRect().top<h*.94){t.style.transitionDelay=Math.min(n++,6)*%d+"ms";t.classList.add("fx-in");'
+            'setTimeout(function(){t.style.transitionDelay=""},1600);return false}return true});'
+            'if(!L.length){removeEventListener("scroll",chk);removeEventListener("resize",chk)}}'
+            'addEventListener("scroll",chk,{passive:true});addEventListener("resize",chk);addEventListener("load",chk);setTimeout(chk,60);setTimeout(chk,800)})()</script>') % (FX_CSS[variant], json.dumps(sel), step)
 def fx_inject(out_dir, variant, sel):
     """書き出した HTML 全部に動きを入れる（もう入っていれば入れ直す）"""
     snip = fx_snippet(variant, sel); n = 0
