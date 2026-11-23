@@ -102,14 +102,18 @@ DEFAULT_PICKS = [tuple(x) for x in SITECFG["default_picks"]]
 # site.json の任意キー（2026-10-30 追加）: pick_btn [Amazon の文字, 楽天の文字]、picks_foot（箱の最後の一言・問い）、refs_max（参考の本を店ごとに何冊まで）
 PICK_BTN = SITECFG.get("pick_btn") or ["Amazon", "楽天"]
 
-def picks_box(cat, title, compact=False):
+# 記事ごとの商品（2026-11-23 追加）: site.json の article_picks {slug: [[q, 表示名, 一言], ...]} があれば、カテゴリの商品の代わりに使う
+ARTICLE_PICKS = {k: [tuple(x) for x in v] for k, v in SITECFG.get("article_picks", {}).items()}
+
+def picks_box(cat, title, compact=False, slug=None):
     e = html.escape
+    lst = ARTICLE_PICKS.get(slug) or PICKS.get(cat, DEFAULT_PICKS)
     items = "".join(
         '<div class="pick"><div><strong>%s</strong><span>%s</span>%s</div>'
         '<a class="btn amz" rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a>'
         '<a class="btn rkt" rel="nofollow sponsored noopener" target="_blank" href="%s">%s</a></div>'
         % (e(label), e(note), refs_html(q), e(amazon_link(q)), e(PICK_BTN[0]), e(rakuten_link(q)), e(PICK_BTN[1]))
-        for q, label, note in (PICKS.get(cat, DEFAULT_PICKS)[:2] if compact else PICKS.get(cat, DEFAULT_PICKS)))
+        for q, label, note in (lst[:2] if compact else lst))
     foot = '<p class="picks-foot">%s</p>' % e(SITECFG["picks_foot"]) if SITECFG.get("picks_foot") and not compact else ""
     return '<div class="picks"><div class="picks-h">%s</div>%s%s</div>' % (e(title), items, foot)
 
@@ -392,13 +396,15 @@ SIDEBAR = ""       # build() で埋める（各ページ共通）
 def cat_slug(c):
     return (SITECFG.get("category_slugs") or {}).get(c) or "c" + hashlib.md5(c.encode()).hexdigest()[:6]
 
-def page(title, desc, body, path, depth=0, og_image="og.png", ld="", cat_on="", sidebar=True):
+def page(title, desc, body, path, depth=0, og_image="og.png", ld="", cat_on="", sidebar=True, side_picks=None):
     up = "../" * depth
     e = html.escape
     full = title if title == NAME else "%s｜%s" % (title, NAME)
     gnav = '<a href="%sindex.html"%s>ホーム</a>' % (up, ' class="on"' if path == "index.html" else "") + "".join(
         '<a href="%scategory/%s.html"%s>%s</a>' % (up, cat_slug(c), ' class="on"' if c == cat_on else "", e(c)) for c, _ in CATS)
-    main = ('<div class="layout"><main>%s</main><aside>%s</aside></div>' % (body, SIDEBAR.replace("UP/", up))) if sidebar \
+    # 記事ページの右側の定番アイテムは、その記事（無ければカテゴリ）の商品に差し替える（2026-11-23 本人指示）
+    side = SIDEBAR.replace(SIDE_PICKS, side_picks) if side_picks else SIDEBAR
+    main = ('<div class="layout"><main>%s</main><aside>%s</aside></div>' % (body, side.replace("UP/", up))) if sidebar \
         else '<div class="layout" style="grid-template-columns:minmax(0,1fr)"><main>%s</main></div>' % body
     html_out = """<!doctype html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -499,6 +505,8 @@ def build():
         '<div class="box catlist"><div class="box-h">カテゴリ</div>%s</div>' % "".join(
             '<a href="UP/category/%s.html">%s<small>%d記事</small></a>' % (cat_slug(c), e(c), n) for c, n in CATS) + \
         '<div class="sticky">%s</div>' % picks_box("", SITECFG["home_picks_title"])
+    global SIDE_PICKS
+    SIDE_PICKS = '<div class="sticky">%s</div>' % picks_box("", SITECFG["home_picks_title"])
 
     # トップページ
     hero = '<div class="hero"><h1>%s</h1><p>%s</p></div>' % (SITECFG["hero_title"], SITECFG["hero_text"])
@@ -546,14 +554,14 @@ def build():
         # 導入文のあと（最初の見出しの前）に目次と短い誘導、まとめの前に全部入りの誘導
         k = art.find("<h2")
         if k > 0:
-            art = art[:k] + toc + picks_box(cat, SITECFG["picks_title_short"], compact=True) + art[k:]
+            art = art[:k] + toc + picks_box(cat, SITECFG["picks_title_short"], compact=True, slug=a["slug"]) + art[k:]
         else:
             art = toc + art
         k = art.rfind('<h2 id="s%d">' % len(a["toc"])) if a["toc"] else -1
         if k > 0:
-            art = art[:k] + picks_box(cat, SITECFG["picks_title_long"]) + vc_box(cat) + book_box() + art[k:]
+            art = art[:k] + picks_box(cat, SITECFG["picks_title_long"], slug=a["slug"]) + vc_box(cat) + book_box() + art[k:]
         else:
-            art += picks_box(cat, SITECFG["picks_title_long"]) + vc_box(cat) + book_box()
+            art += picks_box(cat, SITECFG["picks_title_long"], slug=a["slug"]) + vc_box(cat) + book_box()
         cu = "category/%s.html" % cat_slug(cat)
         body = ('%s<article><a class="tag" href="../%s">%s</a><span class="date">%s</span><h1>%s</h1><p class="prline">%s</p>%s'
                 '<div class="lead"><strong>この記事でわかること</strong>%s</div>%s</article>%s%s%s'
@@ -567,7 +575,8 @@ def build():
                      "publisher": {"@type": "Organization", "name": NAME}, "mainEntityOfPage": SITE + a["url"]}) + \
             crumbs_ld([("ホーム", "index.html"), (cat, cu), (a["title"], a["url"])])
         write(a["url"], page(a["title"], a["description"], body, a["url"], 1,
-                             ("img/articles/%s.jpg" % a["slug"]) if IMAGES else "og.png", ld=ld, cat_on=cat))
+                             ("img/articles/%s.jpg" % a["slug"]) if IMAGES else "og.png", ld=ld, cat_on=cat,
+                             side_picks='<div class="sticky">%s</div>' % picks_box(cat, SITECFG["home_picks_title"], slug=a["slug"])))
     about = ('<article><h1>このサイトについて</h1>' + SITECFG["about_html"] +
              '<h2>広告について</h2><p>当サイトは Amazonアソシエイト・楽天アフィリエイトに参加しており、紹介した商品の購入により運営者が紹介料を受け取ることがあります。Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。</p>'
              + SITECFG.get("ads_extra_html", "") + '</article>')

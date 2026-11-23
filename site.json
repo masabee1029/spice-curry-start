@@ -465,6 +465,83 @@
     "name": "木屋 木べら",
     "src": "楽天"
    }
+  ],
+  "パプリカ パウダー": [
+   {
+    "name": "マコーミック パプリカ パウダー 440g"
+   },
+   {
+    "name": "神戸スパイス パプリカパウダー スペイン産 100g"
+   }
+  ],
+  "ココナッツミルク 缶": [
+   {
+    "name": "ユウキ食品 ココナッツミルク 400g"
+   },
+   {
+    "name": "チャオコー ココナッツミルク 400ml"
+   }
+  ],
+  "ホーロー鍋 20cm": [
+   {
+    "name": "野田琺瑯 キャセロール 20cm ポーチカ"
+   },
+   {
+    "name": "富士ホーロー コットンプラス キャセロール 20cm"
+   }
+  ],
+  "ココット 鍋 20cm": [
+   {
+    "name": "staub ストウブ ピコ ココット ラウンド 20cm"
+   },
+   {
+    "name": "ティファール キャストライン エアココット 20cm"
+   }
+  ],
+  "キッチンタイマー": [
+   {
+    "name": "タニタ でか見えタイマー TD-384"
+   },
+   {
+    "name": "ドリテック デジタルキッチンタイマー T-650"
+   }
+  ],
+  "スパイス ラック 引き出し": [
+   {
+    "name": "山崎実業 tower 隠せる調味料ラック 2段"
+   }
+  ],
+  "スパイス ラベル シール": [
+   {
+    "name": "REMITA 調味料ラベル 耐水"
+   },
+   {
+    "name": "Wisdompro 黒板ラベルシール 調味料/スパイス用"
+   }
+  ],
+  "冷凍 保存容器 カレー 小分け": [
+   {
+    "name": "スケーター 冷凍保存容器 おかず容器 6個"
+   },
+   {
+    "name": "マーナ うつわにもなる保存容器"
+   }
+  ],
+  "コリアンダー シード": [
+   {
+    "name": "アメ横 大津屋 コリアンダーシード 100g"
+   },
+   {
+    "name": "マスコット コリアンダーシード 20g"
+   }
+  ],
+  "ハンドブレンダー": [
+   {
+    "name": "ブラウン マルチクイック5 Pro ハンドブレンダー"
+   },
+   {
+    "name": "パナソニック ハンドブレンダー MX-S302"
+   }
   ]
  },
  "vc_title": "あわせて使えるサービス（PR）",
@@ -517,5 +594,449 @@
   "レシピ": "基本のチキンからキーマ、ダル、サグ、副菜まで。作り方を番号つきの手順で紹介しています。",
   "道具": "スパイスカレー作りに向く鍋の選び方。素材・厚み・大きさの目安がわかります。"
  },
- "category_js": "<script>(function(C){var pg=document.querySelector(\".cx-page\");if(!pg)return;\nvar box=pg.querySelector(\".cards\"),cards=[].slice.call(box.querySelectorAll(\".card\"));\nfunction num(){[].forEach.call(box.querySelectorAll(\".card\"),function(a,i){a.setAttribute(\"data-no\",(C.pre||\"\")+(\"0\"+(i+1)).slice(-2))})}\n/* 読んだ記事に印 */\nvar RL=[];try{RL=JSON.parse(localStorage.getItem(\"ax-read\")||\"[]\")}catch(e){}\nvar m=0;cards.forEach(function(a,i){a.style.setProperty(\"--i\",i);if(RL.indexOf(new URL(a.href,location.href).pathname)>=0){a.classList.add(\"cx-read\");m++;var b=document.createElement(\"span\");b.className=\"cx-badge\";b.textContent=C.read;a.appendChild(b)}});\nnum();\nvar mt=pg.querySelector(\".cx-meter\");if(mt){mt.querySelector(\"b\").textContent=m;var i=mt.querySelector(\"i\");if(i)setTimeout(function(){i.style.setProperty(\"--w\",(cards.length?m/cards.length*100:0)+\"%\")},200)}\n/* 新しい順・古い順 */\nvar s=pg.querySelector(\".cx-sort\");if(s)s.addEventListener(\"click\",function(e){var b=e.target.closest(\"button\");if(!b||b.classList.contains(\"on\"))return;\n [].forEach.call(s.querySelectorAll(\"button\"),function(x){x.classList.toggle(\"on\",x==b)});var arr=cards.slice();if(b.getAttribute(\"data-o\")==\"old\")arr.reverse();arr.forEach(function(a){box.appendChild(a)});num()});\n/* ほかのカテゴリは一覧のあとへ */\nvar o=pg.querySelector(\".cx-others\");if(o){if(!o.querySelector(\"a\"))o.remove();else box.after(o)}\n/* 文字の大きさ（記事ページと同じ設定を使う） */\nif(C.size){var k=\"ax-size\",cur=\"\";try{cur=localStorage.getItem(k)||\"\"}catch(e){}\n var w=document.createElement(\"div\");w.className=\"ax-size\";w.innerHTML='<span>文字の大きさ</span><button data-s=\"\">ふつう</button><button data-s=\"l\">大</button><button data-s=\"xl\">特大</button>';\n function set(v){document.documentElement.setAttribute(\"data-size\",v);[].forEach.call(w.querySelectorAll(\"button\"),function(b){b.classList.toggle(\"on\",b.getAttribute(\"data-s\")==v)});try{localStorage.setItem(k,v)}catch(e){}}\n w.addEventListener(\"click\",function(e){var b=e.target.closest(\"button\");if(b)set(b.getAttribute(\"data-s\"))});var h=pg.querySelector(\".cx-head\");h&&h.appendChild(w);set(cur)}\n})({\"read\": \"読んだ\", \"pre\": \"\"});</script>"
+ "category_js": "<script>(function(C){var pg=document.querySelector(\".cx-page\");if(!pg)return;\nvar box=pg.querySelector(\".cards\"),cards=[].slice.call(box.querySelectorAll(\".card\"));\nfunction num(){[].forEach.call(box.querySelectorAll(\".card\"),function(a,i){a.setAttribute(\"data-no\",(C.pre||\"\")+(\"0\"+(i+1)).slice(-2))})}\n/* 読んだ記事に印 */\nvar RL=[];try{RL=JSON.parse(localStorage.getItem(\"ax-read\")||\"[]\")}catch(e){}\nvar m=0;cards.forEach(function(a,i){a.style.setProperty(\"--i\",i);if(RL.indexOf(new URL(a.href,location.href).pathname)>=0){a.classList.add(\"cx-read\");m++;var b=document.createElement(\"span\");b.className=\"cx-badge\";b.textContent=C.read;a.appendChild(b)}});\nnum();\nvar mt=pg.querySelector(\".cx-meter\");if(mt){mt.querySelector(\"b\").textContent=m;var i=mt.querySelector(\"i\");if(i)setTimeout(function(){i.style.setProperty(\"--w\",(cards.length?m/cards.length*100:0)+\"%\")},200)}\n/* 新しい順・古い順 */\nvar s=pg.querySelector(\".cx-sort\");if(s)s.addEventListener(\"click\",function(e){var b=e.target.closest(\"button\");if(!b||b.classList.contains(\"on\"))return;\n [].forEach.call(s.querySelectorAll(\"button\"),function(x){x.classList.toggle(\"on\",x==b)});var arr=cards.slice();if(b.getAttribute(\"data-o\")==\"old\")arr.reverse();arr.forEach(function(a){box.appendChild(a)});num()});\n/* ほかのカテゴリは一覧のあとへ */\nvar o=pg.querySelector(\".cx-others\");if(o){if(!o.querySelector(\"a\"))o.remove();else box.after(o)}\n/* 文字の大きさ（記事ページと同じ設定を使う） */\nif(C.size){var k=\"ax-size\",cur=\"\";try{cur=localStorage.getItem(k)||\"\"}catch(e){}\n var w=document.createElement(\"div\");w.className=\"ax-size\";w.innerHTML='<span>文字の大きさ</span><button data-s=\"\">ふつう</button><button data-s=\"l\">大</button><button data-s=\"xl\">特大</button>';\n function set(v){document.documentElement.setAttribute(\"data-size\",v);[].forEach.call(w.querySelectorAll(\"button\"),function(b){b.classList.toggle(\"on\",b.getAttribute(\"data-s\")==v)});try{localStorage.setItem(k,v)}catch(e){}}\n w.addEventListener(\"click\",function(e){var b=e.target.closest(\"button\");if(b)set(b.getAttribute(\"data-s\"))});var h=pg.querySelector(\".cx-head\");h&&h.appendChild(w);set(cur)}\n})({\"read\": \"読んだ\", \"pre\": \"\"});</script>",
+ "article_picks": {
+  "adjusting-heat": [
+   [
+    "カイエンペッパー パウダー",
+    "カイエンペッパー（チリパウダー）",
+    "辛さを少しずつ足せる"
+   ],
+   [
+    "パプリカ パウダー",
+    "パプリカパウダー",
+    "辛くせず色と甘みを足す"
+   ],
+   [
+    "ココナッツミルク 缶",
+    "ココナッツミルク",
+    "辛さをまろやかにする"
+   ]
+  ],
+  "basic-chicken-curry": [
+   [
+    "クミンシード",
+    "クミンシード",
+    "最初に油で香りを出す"
+   ],
+   [
+    "コリアンダー パウダー",
+    "コリアンダーパウダー",
+    "とろみと爽やかな香り"
+   ],
+   [
+    "ターメリック パウダー",
+    "ターメリックパウダー",
+    "色と土っぽい香り"
+   ]
+  ],
+  "choosing-a-pot": [
+   [
+    "厚手 鍋 ステンレス 20cm",
+    "厚手のステンレス鍋",
+    "焦げつきにくく玉ねぎ炒めが楽"
+   ],
+   [
+    "ホーロー鍋 20cm",
+    "ホーロー鍋（20cm前後）",
+    "酸に強くお手入れが楽"
+   ],
+   [
+    "ココット 鍋 20cm",
+    "ココット鍋（20cm前後）",
+    "蓋が重く煮込みに向く"
+   ]
+  ],
+  "dal-curry": [
+   [
+    "レンズ豆 皮なし 赤",
+    "皮むきレンズ豆",
+    "煮崩れてとろりとなる"
+   ],
+   [
+    "ターメリック パウダー",
+    "ターメリックパウダー",
+    "色と土っぽい香り"
+   ],
+   [
+    "クミンシード",
+    "クミンシード",
+    "最初に油で香りを出す"
+   ]
+  ],
+  "how-to-use-cumin": [
+   [
+    "クミンシード",
+    "クミンシード",
+    "最初に油で香りを出す"
+   ],
+   [
+    "クミンパウダー",
+    "クミンパウダー",
+    "仕上がりにコクと香り"
+   ],
+   [
+    "スパイスミル 電動",
+    "電動スパイスミル",
+    "ホールスパイスを挽きたてで"
+   ]
+  ],
+  "keema-curry": [
+   [
+    "ガラムマサラ パウダー",
+    "ガラムマサラ",
+    "仕上げの香りづけに"
+   ],
+   [
+    "クミンパウダー",
+    "クミンパウダー",
+    "仕上がりにコクと香り"
+   ],
+   [
+    "コリアンダー パウダー",
+    "コリアンダーパウダー",
+    "とろみと爽やかな香り"
+   ]
+  ],
+  "sauteing-onions": [
+   [
+    "木べら 炒め",
+    "炒め物に使いやすい木べら",
+    "鍋底をこそげやすい"
+   ],
+   [
+    "厚手 鍋 ステンレス 20cm",
+    "厚手のステンレス鍋",
+    "焦げつきにくく玉ねぎ炒めが楽"
+   ],
+   [
+    "キッチンタイマー",
+    "キッチンタイマー",
+    "炒め時間の目安を計れる"
+   ]
+  ],
+  "storing-spices": [
+   [
+    "スパイス 保存容器 ガラス 瓶",
+    "スパイスの保存瓶",
+    "香りを長持ちさせる"
+   ],
+   [
+    "スパイス ラック 引き出し",
+    "スパイスラック",
+    "取り出しやすく並べられる"
+   ],
+   [
+    "スパイス ラベル シール",
+    "保存容器のラベルシール",
+    "中身と日付をひと目で"
+   ]
+  ],
+  "whole-vs-ground-spices": [
+   [
+    "クミンシード",
+    "クミンシード",
+    "最初に油で香りを出す"
+   ],
+   [
+    "クミンパウダー",
+    "クミンパウダー",
+    "仕上がりにコクと香り"
+   ],
+   [
+    "スパイスミル 電動",
+    "電動スパイスミル",
+    "ホールスパイスを挽きたてで"
+   ]
+  ],
+  "make-ahead-freezing": [
+   [
+    "冷凍用 保存袋 ジッパー",
+    "冷凍用の保存袋",
+    "薄く平らに凍らせやすい"
+   ],
+   [
+    "冷凍 保存容器 カレー 小分け",
+    "小分けの冷凍容器",
+    "1食分ずつ取り出せる"
+   ],
+   [
+    "ガラムマサラ パウダー",
+    "ガラムマサラ",
+    "仕上げの香りづけに"
+   ]
+  ],
+  "how-to-use-coriander": [
+   [
+    "コリアンダー パウダー",
+    "コリアンダーパウダー",
+    "とろみと爽やかな香り"
+   ],
+   [
+    "コリアンダー シード",
+    "コリアンダーシード（ホール）",
+    "挽きたての香りを楽しむ"
+   ],
+   [
+    "スパイスミル 電動",
+    "電動スパイスミル",
+    "ホールスパイスを挽きたてで"
+   ]
+  ],
+  "how-to-use-turmeric": [
+   [
+    "ターメリック パウダー",
+    "ターメリックパウダー",
+    "色と土っぽい香り"
+   ],
+   [
+    "計量スプーン セット",
+    "計量スプーン",
+    "スパイスの量を正確に"
+   ],
+   [
+    "木べら 炒め",
+    "炒め物に使いやすい木べら",
+    "鍋底をこそげやすい"
+   ]
+  ],
+  "spice-curry-side-dishes": [
+   [
+    "カレー皿 ワンプレート 大皿",
+    "カレーの盛り付けに使える大皿",
+    "副菜を並べて映える"
+   ],
+   [
+    "スパイスカレー スパイス セット",
+    "スパイスカレーのスパイスセット",
+    "必要なスパイスが少量ずつそろう"
+   ],
+   [
+    "クミンシード",
+    "クミンシード",
+    "最初に油で香りを出す"
+   ]
+  ],
+  "saag-curry-spinach": [
+   [
+    "ハンドブレンダー",
+    "ペースト用ハンドブレンダー",
+    "ほうれん草をなめらかに"
+   ],
+   [
+    "スパイスカレー スパイス セット",
+    "スパイスカレーのスパイスセット",
+    "必要なスパイスが少量ずつそろう"
+   ],
+   [
+    "クミンシード",
+    "クミンシード",
+    "最初に油で香りを出す"
+   ]
+  ],
+  "rice-for-spice-curry": [
+   [
+    "ターメリック パウダー",
+    "ターメリックパウダー",
+    "色と土っぽい香り"
+   ],
+   [
+    "バスマティライス",
+    "バスマティライス",
+    "パラリと香りのよいごはん"
+   ],
+   [
+    "カルダモン ホール",
+    "カルダモン（ホール）",
+    "ごはんに上品な香りを"
+   ]
+  ],
+  "how-to-use-garam-masala": [
+   [
+    "ガラムマサラ",
+    "ガラムマサラ",
+    "仕上げの香りづけに"
+   ],
+   [
+    "スパイスミル 電動",
+    "電動スパイスミル",
+    "ホールスパイスを挽きたてで"
+   ],
+   [
+    "スパイス 保存容器 ガラス 瓶",
+    "スパイスの保存瓶",
+    "香りを長持ちさせる"
+   ]
+  ],
+  "vegetable-spice-curry": [
+   [
+    "ペティナイフ 野菜 おすすめ",
+    "野菜用のペティナイフ",
+    "小さな野菜の下ごしらえに"
+   ],
+   [
+    "スパイスカレー スパイス セット",
+    "スパイスカレーのスパイスセット",
+    "必要なスパイスが少量ずつそろう"
+   ],
+   [
+    "厚手 鍋 ステンレス 20cm",
+    "厚手のステンレス鍋",
+    "焦げつきにくく玉ねぎ炒めが楽"
+   ]
+  ],
+  "small-tools-for-spice-curry": [
+   [
+    "計量スプーン セット",
+    "計量スプーン",
+    "スパイスの量を正確に"
+   ],
+   [
+    "キッチンスケール 1g単位",
+    "1g単位のキッチンスケール",
+    "少量のスパイスを正確に"
+   ],
+   [
+    "木べら 炒め",
+    "炒め物に使いやすい木べら",
+    "鍋底をこそげやすい"
+   ]
+  ],
+  "spice-curry-mistakes-and-fixes": [
+   [
+    "計量スプーン セット",
+    "計量スプーン",
+    "スパイスの量を正確に"
+   ],
+   [
+    "厚手 鍋 ステンレス 20cm",
+    "厚手のステンレス鍋",
+    "焦げつきにくく玉ねぎ炒めが楽"
+   ],
+   [
+    "ガラムマサラ パウダー",
+    "ガラムマサラ",
+    "仕上げの香りづけに"
+   ]
+  ],
+  "measuring-and-grinding-tools": [
+   [
+    "スパイスミル 電動",
+    "電動スパイスミル",
+    "ホールスパイスを挽きたてで"
+   ],
+   [
+    "計量スプーン セット",
+    "小さじ1/4まで計れるスプーン",
+    "少量のスパイスを正確に"
+   ],
+   [
+    "すり鉢 すりこぎ",
+    "すり鉢とすりこぎ",
+    "手でじっくり挽ける"
+   ]
+  ],
+  "chana-masala-recipe": [
+   [
+    "ひよこ豆 水煮",
+    "ひよこ豆の水煮",
+    "缶やパウチですぐ使える"
+   ],
+   [
+    "ガラムマサラ パウダー",
+    "ガラムマサラ",
+    "仕上げの香りづけに"
+   ],
+   [
+    "クミンシード",
+    "クミンシード",
+    "最初に油で香りを出す"
+   ]
+  ],
+  "how-to-use-cardamom": [
+   [
+    "カルダモン ホール",
+    "カルダモン（ホール）",
+    "甘く爽やかな香り"
+   ],
+   [
+    "カルダモン パウダー",
+    "カルダモンパウダー",
+    "手軽に香りを足せる"
+   ],
+   [
+    "スパイスミル 電動",
+    "電動スパイスミル",
+    "ホールスパイスを挽きたてで"
+   ]
+  ],
+  "how-to-use-clove-cinnamon": [
+   [
+    "クローブ ホール",
+    "クローブ（ホール）",
+    "少量で甘い香り"
+   ],
+   [
+    "シナモン スティック",
+    "シナモンスティック",
+    "煮込みに甘い香り"
+   ],
+   [
+    "スパイスミル 電動",
+    "電動スパイスミル",
+    "ホールスパイスを挽きたてで"
+   ]
+  ],
+  "watery-curry-fix": [
+   [
+    "ホーロー鍋 20cm",
+    "浅めのホーロー鍋",
+    "水分が飛びやすい"
+   ],
+   [
+    "厚手 鍋 ステンレス 20cm",
+    "厚手のステンレス鍋",
+    "焦げつきにくく玉ねぎ炒めが楽"
+   ],
+   [
+    "木べら 炒め",
+    "炒め物に使いやすい木べら",
+    "鍋底をこそげやすい"
+   ]
+  ],
+  "seafood-curry-shrimp-tomato": [
+   [
+    "ココナッツミルク 缶",
+    "ココナッツミルク",
+    "まろやかなコクを足す"
+   ],
+   [
+    "カレー用 フライパン 深型",
+    "深型のフライパン",
+    "具材を重ねず火が通る"
+   ],
+   [
+    "スパイスカレー スパイス セット",
+    "スパイスカレーのスパイスセット",
+    "必要なスパイスが少量ずつそろう"
+   ]
+  ],
+  "mortar-and-mill-choice": [
+   [
+    "スパイスミル 手動",
+    "手動スパイスミル",
+    "少量ずつ挽きやすい"
+   ],
+   [
+    "すり鉢 すりこぎ",
+    "すり鉢とすりこぎ",
+    "香りが立つまでじっくり"
+   ],
+   [
+    "スパイスミル 電動",
+    "電動スパイスミル",
+    "ホールスパイスを挽きたてで"
+   ]
+  ]
+ }
 }
