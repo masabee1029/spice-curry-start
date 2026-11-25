@@ -25,7 +25,7 @@ header{border-bottom:1px solid var(--line);background:var(--card)}
 .sec-h{font-size:20px;margin:40px 0 4px;padding-bottom:8px;border-bottom:3px solid var(--accent);display:flex;justify-content:space-between;align-items:baseline}
 .sec-h a{font-size:13px;font-weight:400}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;padding:16px 0}
-.thumb{display:block;width:calc(100% + 32px);max-width:none;margin:-16px -16px 12px;aspect-ratio:1200/630;object-fit:cover;border-radius:12px 12px 0 0}
+.thumb{display:block;width:calc(100% + 32px);max-width:none;margin:-16px -16px 12px;aspect-ratio:1024/572;object-fit:cover;border-radius:12px 12px 0 0}
 .card{overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--fg);display:block;transition:transform .15s}
 .card:hover{border-color:var(--accent);transform:translateY(-2px)}.card h2,.card h3{font-size:16px;line-height:1.5;margin:6px 0}.card p{font-size:13px;color:var(--muted);margin:0}
 .tag{display:inline-block;font-size:12px;padding:1px 10px;border-radius:99px;background:var(--accent);color:#fff;text-decoration:none}
@@ -39,6 +39,7 @@ article h3{font-size:18px;margin-top:28px;border-bottom:2px solid var(--line);pa
 .lead{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:14px;margin:16px 0}
 .lead strong{display:block;color:var(--accent)}
 .toc{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:10px;padding:12px 20px;font-size:14px;margin:20px 0}
+.fig{margin:22px 0;text-align:center}.fig img{max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(127,127,127,.25)}.fig figcaption{font-size:.9em;color:var(--muted,#666);margin-top:8px;line-height:1.6}.fig-tag{display:inline-block;font-size:.78em;border:1px solid currentColor;border-radius:4px;padding:0 6px;margin-right:6px;vertical-align:1px}
 .note{background:var(--card);border-left:4px solid var(--accent2);padding:10px 14px;border-radius:6px;margin:16px 0}
 .tbl{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid var(--line);padding:6px 10px;text-align:left}th{background:var(--soft)}
 code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:14px}
@@ -66,7 +67,7 @@ aside .box-h{font-weight:800;font-size:15px;margin:-4px 0 10px;padding-bottom:6p
 aside .sticky{position:sticky;top:16px}
 aside .picks{margin:0 0 20px}
 .mini{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--fg);padding:8px 0;border-top:1px solid var(--line);line-height:1.5}
-.mini:first-of-type{border-top:0}.mini img{flex:0 0 96px;width:96px;aspect-ratio:1200/630;object-fit:cover;border-radius:6px}
+.mini:first-of-type{border-top:0}.mini img{flex:0 0 96px;width:96px;aspect-ratio:1024/572;object-fit:cover;border-radius:6px}
 .mini b{display:inline-block;flex:0 0 22px;height:22px;border-radius:50%;background:var(--accent2);color:#fff;font-size:12px;text-align:center;line-height:22px}
 .catlist a{display:flex;justify-content:space-between;text-decoration:none;color:var(--fg);padding:6px 0;border-top:1px solid var(--line)}.catlist a:first-of-type{border-top:0}
 .catlist small{color:var(--muted)}
@@ -234,6 +235,7 @@ article p strong,article li strong,article td strong{font-weight:800;color:var(-
 <h2 id="s2">順番1：塩は「3回に分けて」入れる</h2>
 <p>塩は、最初に全量を入れず、<strong>3回に分けて</strong>入れると、失敗しにくくなります。</p>
 <div class="tbl"><table><tr><th>タイミング</th><th>入れ方の目安</th><th>ねらい</th></tr><tr><td>玉ねぎを炒めるとき</td><td>指でひとつまみ</td><td>水分が出て、早く色づく</td></tr><tr><td>トマトや水分を入れるとき</td><td>全体の量の半分ほど</td><td>ベースの味の土台</td></tr><tr><td>仕上げ</td><td>味見をして、少しずつ</td><td>最後の微調整</td></tr></table></div>
+<figure class="fig"><img src="../img/fig/curry-taste-salt-acid-1.png" alt="説明用の図：塩を入れる3つのタイミングと量の目安です。最後は味見をしながら少しずつ足します。" loading="lazy"><figcaption><span class="fig-tag">説明用の図</span>塩を入れる3つのタイミングと量の目安です。最後は味見をしながら少しずつ足します。</figcaption></figure>
 <p>量は、材料の重さや好みで変わります。2〜3人分でトマト缶1缶ほどなら、全体で小さじ1〜1と1/2が一つの目安です。<strong>味見をしてから足す</strong>のが基本です。</p>
 <p>ここで、よくある声があります。「塩を入れすぎそうで怖い……」。その場合は、<strong>小さじ1/4ずつ</strong>足して、混ぜて30秒待ってから味見をします。足すのは簡単ですが、引くのは難しいので、少しずつで大丈夫です。</p>
 <h2 id="s3">順番2：酸味で引き締める</h2>
@@ -245,6 +247,7 @@ article p strong,article li strong,article td strong{font-weight:800;color:var(-
 <p>酸っぱいときに塩を足しても、解決しないことがあります。<strong>何が足りないか</strong>ではなく、<strong>何が強すぎるか</strong>を考えると、直し方が見つかります。辛さの調整は<a href="adjusting-heat.html">スパイスカレーの辛さの調整方法</a>にまとめています。</p>
 <h2 id="s5">スパイスの足し方は最後に考える</h2>
 <p>塩と酸味を整えても物足りないときに、はじめてスパイスを考えます。仕上げに少量の<strong>ガラムマサラ</strong>を足すと、香りに奥行きが出ます。入れすぎると苦くなるので、小さじ1/4から始めます。</p>
+<figure class="fig"><img src="../img/fig/curry-taste-salt-acid-2.png" alt="説明用の図：塩→酸味→甘みの順に整え、スパイスは最後に考える流れです。" loading="lazy"><figcaption><span class="fig-tag">説明用の図</span>塩→酸味→甘みの順に整え、スパイスは最後に考える流れです。</figcaption></figure>
 <div class="shop"><div class="shop-name">ガラムマサラ<span class="ref">参考（2026年11月の人気）：Amazon：<a rel="nofollow sponsored noopener" target="_blank" href="https://www.amazon.co.jp/s?k=SPANION+%E3%82%AC%E3%83%A9%E3%83%A0%E3%83%9E%E3%82%B5%E3%83%A9+%E5%9B%BD%E5%86%85%E8%A3%BD%E9%80%A0&amp;tag=masabee-curry-22">SPANION ガラムマサラ 国内製造</a></span></div><a class="btn amz" rel="nofollow sponsored noopener" target="_blank" href="https://www.amazon.co.jp/s?k=%E3%82%AC%E3%83%A9%E3%83%A0%E3%83%9E%E3%82%B5%E3%83%A9&amp;tag=masabee-curry-22">Amazonで見る</a><a class="btn rkt" rel="nofollow sponsored noopener" target="_blank" href="https://hb.afl.rakuten.co.jp/hgc/151a9587.4904a96c.151a9588.d0d13240/_RTLink155218/?pc=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%25E3%2582%25AC%25E3%2583%25A9%25E3%2583%25A0%25E3%2583%259E%25E3%2582%25B5%25E3%2583%25A9%2F">楽天で見る</a></div>
 <p>量を正確に計るための道具も、味を安定させる助けになります。</p>
 <div class="shop"><div class="shop-name">計量スプーン</div><a class="btn amz" rel="nofollow sponsored noopener" target="_blank" href="https://www.amazon.co.jp/s?k=%E8%A8%88%E9%87%8F%E3%82%B9%E3%83%97%E3%83%BC%E3%83%B3+%E5%B0%8F%E3%81%95%E3%81%98+1%2F4&amp;tag=masabee-curry-22">Amazonで見る</a><a class="btn rkt" rel="nofollow sponsored noopener" target="_blank" href="https://hb.afl.rakuten.co.jp/hgc/151a9587.4904a96c.151a9588.d0d13240/_RTLink155218/?pc=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%25E8%25A8%2588%25E9%2587%258F%25E3%2582%25B9%25E3%2583%2597%25E3%2583%25BC%25E3%2583%25B3%2520%25E5%25B0%258F%25E3%2581%2595%25E3%2581%2598%25201%2F4%2F">楽天で見る</a></div>

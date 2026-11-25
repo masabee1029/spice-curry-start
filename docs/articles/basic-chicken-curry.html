@@ -25,7 +25,7 @@ header{border-bottom:1px solid var(--line);background:var(--card)}
 .sec-h{font-size:20px;margin:40px 0 4px;padding-bottom:8px;border-bottom:3px solid var(--accent);display:flex;justify-content:space-between;align-items:baseline}
 .sec-h a{font-size:13px;font-weight:400}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;padding:16px 0}
-.thumb{display:block;width:calc(100% + 32px);max-width:none;margin:-16px -16px 12px;aspect-ratio:1200/630;object-fit:cover;border-radius:12px 12px 0 0}
+.thumb{display:block;width:calc(100% + 32px);max-width:none;margin:-16px -16px 12px;aspect-ratio:1024/572;object-fit:cover;border-radius:12px 12px 0 0}
 .card{overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--fg);display:block;transition:transform .15s}
 .card:hover{border-color:var(--accent);transform:translateY(-2px)}.card h2,.card h3{font-size:16px;line-height:1.5;margin:6px 0}.card p{font-size:13px;color:var(--muted);margin:0}
 .tag{display:inline-block;font-size:12px;padding:1px 10px;border-radius:99px;background:var(--accent);color:#fff;text-decoration:none}
@@ -39,6 +39,7 @@ article h3{font-size:18px;margin-top:28px;border-bottom:2px solid var(--line);pa
 .lead{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:14px;margin:16px 0}
 .lead strong{display:block;color:var(--accent)}
 .toc{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:10px;padding:12px 20px;font-size:14px;margin:20px 0}
+.fig{margin:22px 0;text-align:center}.fig img{max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(127,127,127,.25)}.fig figcaption{font-size:.9em;color:var(--muted,#666);margin-top:8px;line-height:1.6}.fig-tag{display:inline-block;font-size:.78em;border:1px solid currentColor;border-radius:4px;padding:0 6px;margin-right:6px;vertical-align:1px}
 .note{background:var(--card);border-left:4px solid var(--accent2);padding:10px 14px;border-radius:6px;margin:16px 0}
 .tbl{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid var(--line);padding:6px 10px;text-align:left}th{background:var(--soft)}
 code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:14px}
@@ -66,7 +67,7 @@ aside .box-h{font-weight:800;font-size:15px;margin:-4px 0 10px;padding-bottom:6p
 aside .sticky{position:sticky;top:16px}
 aside .picks{margin:0 0 20px}
 .mini{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--fg);padding:8px 0;border-top:1px solid var(--line);line-height:1.5}
-.mini:first-of-type{border-top:0}.mini img{flex:0 0 96px;width:96px;aspect-ratio:1200/630;object-fit:cover;border-radius:6px}
+.mini:first-of-type{border-top:0}.mini img{flex:0 0 96px;width:96px;aspect-ratio:1024/572;object-fit:cover;border-radius:6px}
 .mini b{display:inline-block;flex:0 0 22px;height:22px;border-radius:50%;background:var(--accent2);color:#fff;font-size:12px;text-align:center;line-height:22px}
 .catlist a{display:flex;justify-content:space-between;text-decoration:none;color:var(--fg);padding:6px 0;border-top:1px solid var(--line)}.catlist a:first-of-type{border-top:0}
 .catlist small{color:var(--muted)}
@@ -232,11 +233,13 @@ article p strong,article li strong,article td strong{font-weight:800;color:var(-
 <p>辛さがほしい場合は、チリパウダー（カイエンペッパー）を少し加えます。辛さの加減は「<a href="adjusting-heat.html">スパイスカレーの辛さの調整のしかた｜辛くする方法・まろやかにする方法</a>」も参考にしてください。</p>
 <h2 id="s2">材料（2〜3人分）</h2>
 <div class="tbl"><table><tr><th>材料</th><th>分量</th></tr><tr><td>鶏もも肉</td><td>400g</td></tr><tr><td>玉ねぎ</td><td>中1個</td></tr><tr><td>トマト</td><td>中1個（またはカットトマト缶 200g）</td></tr><tr><td>にんにく</td><td>1かけ</td></tr><tr><td>しょうが</td><td>1かけ（にんにくと同量程度）</td></tr><tr><td>サラダ油</td><td>大さじ2</td></tr><tr><td>塩</td><td>小さじ1（味を見て調整）</td></tr><tr><td>水</td><td>200ml</td></tr><tr><td>ターメリック</td><td>小さじ1/2</td></tr><tr><td>クミンパウダー</td><td>小さじ2</td></tr><tr><td>コリアンダーパウダー</td><td>小さじ2</td></tr><tr><td>チリパウダー（お好みで）</td><td>小さじ1/4〜1/2</td></tr></table></div>
+<figure class="fig"><img src="../img/fig/basic-chicken-curry-1.png" alt="説明用の図：3つのスパイスの量をマスで比べた図です。ターメリックはクミン・コリアンダーの4分の1です。" loading="lazy"><figcaption><span class="fig-tag">説明用の図</span>3つのスパイスの量をマスで比べた図です。ターメリックはクミン・コリアンダーの4分の1です。</figcaption></figure>
 <h3>下ごしらえ</h3>
 <ul><li>鶏もも肉は余分な脂を取り除き、3〜4cm角に切ります。</li><li>玉ねぎはみじん切りにします。</li><li>トマトはざく切りにします。</li><li>にんにくとしょうがはすりおろします。</li><li>3つのスパイス（とチリパウダー）は、小皿に合わせておきます。</li></ul>
 <div class="note">生の鶏肉を切ったまな板や包丁、手は、ほかの食材に触れる前によく洗ってください。</div>
 <h2 id="s3">作り方</h2>
 <ol><li><strong>玉ねぎを炒める（中火・約10〜15分）</strong>：鍋にサラダ油を入れて中火で温め、玉ねぎと塩ひとつまみ（分量外）を加えて炒めます。ところどころ茶色くなり、きつね色になるまで炒めます。鍋底が焦げそうになったら、水大さじ1〜2を加えてこそげ取ります。</li><li><strong>にんにく・しょうがを加える（中火・約1分）</strong>：すりおろしたにんにくとしょうがを加え、香りが立つまで炒めます。</li><li><strong>トマトを加える（中火・約3〜5分）</strong>：トマトを加え、木べらでつぶしながら炒めます。水分が少し飛び、全体がペースト状になればOKです。</li><li><strong>スパイスを加える（弱火・約1〜2分）</strong>：火を弱め、合わせておいたスパイスと塩小さじ1を加えます。全体になじませるように炒め、粉っぽさがなくなるまで加熱します。焦げやすいので、乾いてきたら水を少し足してください。</li><li><strong>鶏肉を加える（中火・約3分）</strong>：鶏肉を加え、表面の色が変わるまでスパイスのペーストとからめながら炒めます。</li><li><strong>煮込む（弱めの中火・ふたをして約15〜20分）</strong>：水200mlを加えてひと混ぜし、沸騰したらふたをして弱めの中火で煮込みます。ときどき鍋底から混ぜてください。</li><li><strong>火の通りを確認する</strong>：いちばん大きな鶏肉を切ってみて、中心まで白くなり、赤い部分や透明な汁が残っていないことを確認します。不安な場合は、さらに数分煮込んでください。</li><li><strong>味を調える（中火・約2〜3分）</strong>：味見をして、塩気が足りなければ少しずつ塩を加えます。とろみがゆるければ、ふたを外して少し煮詰めます。</li></ol>
+<figure class="fig"><img src="../img/fig/basic-chicken-curry-2.png" alt="説明用の図：8つの手順と火加減・時間の流れです。4のスパイスだけは弱火で入れます。" loading="lazy"><figcaption><span class="fig-tag">説明用の図</span>8つの手順と火加減・時間の流れです。4のスパイスだけは弱火で入れます。</figcaption></figure>
 <h2 id="s4">おいしく作るためのポイント</h2>
 <h3>塩は最後に必ず味見して決める</h3>
 <p>スパイスカレーでは、塩の量で味の印象が大きく変わります。香りはしているのに味がぼんやりするときは、ほとんどの場合、塩が足りていません。少量ずつ加えて、そのたびに味見をしてください。</p>
